@@ -22,12 +22,13 @@ local scrollFrame = mapButtonsFrame:WaitForChild("ScrollFrame")
 local containerPadding = container:FindFirstChildOfClass("UIPadding")
 if not containerPadding then
 	containerPadding = Instance.new("UIPadding")
-	containerPadding.PaddingLeft = UDim.new(0, 20)  -- 20px left padding
-	containerPadding.PaddingRight = UDim.new(0, 20)  -- 20px right padding
-	containerPadding.PaddingTop = UDim.new(0, 15)   -- 15px top padding
-	containerPadding.PaddingBottom = UDim.new(0, 15) -- 15px bottom padding
 	containerPadding.Parent = container
 end
+-- Always set proper padding values to prevent cutoff
+containerPadding.PaddingLeft = UDim.new(0, 20)  -- 20px left padding
+containerPadding.PaddingRight = UDim.new(0, 20)  -- 20px right padding
+containerPadding.PaddingTop = UDim.new(0, 15)   -- 15px top padding
+containerPadding.PaddingBottom = UDim.new(0, 15) -- 15px bottom padding
 
 -- Get the template you built in Studio
 local cardTemplate = scrollFrame:WaitForChild("CardTemplate")
