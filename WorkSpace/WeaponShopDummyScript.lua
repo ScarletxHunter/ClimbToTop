@@ -44,15 +44,6 @@ billboard.AlwaysOnTop = false  -- CHANGED: Don't show through walls
 billboard.MaxDistance = 30  -- ADDED: Only visible within 30 studs!
 billboard.Parent = head
 
--- Icon (smaller)
-local iconLabel = Instance.new("ImageLabel")
-iconLabel.Size = UDim2.new(0, 50, 0, 50)  -- Smaller icon
-iconLabel.Position = UDim2.new(0.5, -25, 0, 10)
-iconLabel.BackgroundTransparency = 1
-iconLabel.Image = "rbxassetid://6031094687"  -- Gun icon
-iconLabel.ImageColor3 = Color3.fromRGB(255, 215, 0)
-iconLabel.Parent = billboard
-
 -- Text
 local textLabel = Instance.new("TextLabel")
 textLabel.Size = UDim2.new(1, 0, 0, 25)
@@ -64,15 +55,6 @@ textLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
 textLabel.TextSize = 18  -- Fixed size instead of scaled
 textLabel.TextStrokeTransparency = 0.5
 textLabel.Parent = billboard
-
--- Spinning animation
-local TweenService = game:GetService("TweenService")
-local spinTween = TweenService:Create(
-	iconLabel,
-	TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1),
-	{Rotation = 360}
-)
-spinTween:Play()
 
 -- =========================================================
 -- REMOTE EVENT
