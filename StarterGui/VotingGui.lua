@@ -27,7 +27,6 @@ if not containerPadding then
 	containerPadding.PaddingTop = UDim.new(0, 15)   -- 15px top padding
 	containerPadding.PaddingBottom = UDim.new(0, 15) -- 15px bottom padding
 	containerPadding.Parent = container
-	print("? Added UIPadding to voting container to prevent cutoff")
 end
 
 -- Get the template you built in Studio

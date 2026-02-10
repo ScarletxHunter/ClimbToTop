@@ -464,7 +464,7 @@ local function createWeaponCard(weaponData)
 			coinButton.TextSize = 14
 			coinButton.BackgroundColor3 = Color3.fromRGB(0, 140, 80)
 			coinBtnStroke.Color = Color3.fromRGB(0, 80, 40)
-			-- -- cardStroke.Color = Color3.fromRGB(0, 200, 100)
+			-- cardStroke.Color = Color3.fromRGB(0, 200, 100)
 		elseif isLocked then
 			coinButton.Text = "?? LOCKED (Bought " .. tostring(coinWeapon) .. ")"
 			coinButton.TextSize = 11
@@ -482,7 +482,7 @@ local function createWeaponCard(weaponData)
 			coinButton.TextSize = 14
 			coinButton.BackgroundColor3 = Color3.fromRGB(60, 65, 85)
 			coinBtnStroke.Color = Color3.fromRGB(30, 35, 50)
-			-- -- cardStroke.Color = Color3.fromRGB(50, 60, 90)
+			-- cardStroke.Color = Color3.fromRGB(50, 60, 90)
 		else
 			coinButton.Text = "?? " .. weaponData.CoinPrice .. " (1 Round)"
 			coinButton.TextSize = 14
