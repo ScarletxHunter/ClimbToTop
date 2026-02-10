@@ -18,6 +18,18 @@ local container = gui:WaitForChild("Container")
 local mapButtonsFrame = container:WaitForChild("MapButtons")
 local scrollFrame = mapButtonsFrame:WaitForChild("ScrollFrame")
 
+-- Add UIPadding to prevent cutoff on left and right sides
+local containerPadding = container:FindFirstChildOfClass("UIPadding")
+if not containerPadding then
+	containerPadding = Instance.new("UIPadding")
+	containerPadding.PaddingLeft = UDim.new(0, 20)  -- 20px left padding
+	containerPadding.PaddingRight = UDim.new(0, 20)  -- 20px right padding
+	containerPadding.PaddingTop = UDim.new(0, 15)   -- 15px top padding
+	containerPadding.PaddingBottom = UDim.new(0, 15) -- 15px bottom padding
+	containerPadding.Parent = container
+	print("? Added UIPadding to voting container to prevent cutoff")
+end
+
 -- Get the template you built in Studio
 local cardTemplate = scrollFrame:WaitForChild("CardTemplate")
 cardTemplate.Visible = false -- Keep template hidden, we clone it
@@ -115,7 +127,7 @@ local function createMapButtons(maps)
 		local icon = MAP_ICONS[((i - 1) % #MAP_ICONS) + 1]
 
 		-- Clone YOUR template exactly as you designed it
-		-- NO size or position changes — your UIListLayout handles that
+		-- NO size or position changes ï¿½ your UIListLayout handles that
 		local card = cardTemplate:Clone()
 		card.Name = mapName
 		card.Visible = true
@@ -162,7 +174,7 @@ local function createMapButtons(maps)
 		end
 
 		-- ============================================
-		-- APPLY ACCENT COLOR (optional — remove if you set colors in template)
+		-- APPLY ACCENT COLOR (optional ï¿½ remove if you set colors in template)
 		-- ============================================
 
 		local cardStroke = card:FindFirstChildWhichIsA("UIStroke")

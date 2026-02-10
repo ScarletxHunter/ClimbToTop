@@ -286,12 +286,6 @@ local function createWeaponCard(weaponData)
 
 	Instance.new("UICorner", card).CornerRadius = UDim.new(0, 18)
 
-	local cardStroke = Instance.new("UIStroke")
-	cardStroke.Name = "CardStroke"
-	cardStroke.Color = weaponData.RarityColor
-	cardStroke.Thickness = 4
-	cardStroke.Parent = card
-
 	local cardGradient = Instance.new("UIGradient")
 	cardGradient.Color = ColorSequence.new({
 		ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 35, 60)),
@@ -442,12 +436,12 @@ local function createWeaponCard(weaponData)
 				coinButton.Text = "? EQUIPPED"
 				coinButton.BackgroundColor3 = Color3.fromRGB(0, 140, 80)
 				coinBtnStroke.Color = Color3.fromRGB(0, 80, 40)
-				cardStroke.Color = Color3.fromRGB(0, 200, 100)
+				-- cardStroke.Color = Color3.fromRGB(0, 200, 100)
 			else
 				coinButton.Text = "? EQUIP"
 				coinButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
 				coinBtnStroke.Color = Color3.fromRGB(0, 120, 200)
-				cardStroke.Color = Color3.fromRGB(255, 215, 0)
+				-- cardStroke.Color = Color3.fromRGB(255, 215, 0)
 			end
 			return
 		end
@@ -470,31 +464,31 @@ local function createWeaponCard(weaponData)
 			coinButton.TextSize = 14
 			coinButton.BackgroundColor3 = Color3.fromRGB(0, 140, 80)
 			coinBtnStroke.Color = Color3.fromRGB(0, 80, 40)
-			cardStroke.Color = Color3.fromRGB(0, 200, 100)
+			-- -- cardStroke.Color = Color3.fromRGB(0, 200, 100)
 		elseif isLocked then
 			coinButton.Text = "?? LOCKED (Bought " .. tostring(coinWeapon) .. ")"
 			coinButton.TextSize = 11
 			coinButton.BackgroundColor3 = Color3.fromRGB(50, 40, 50)
 			coinBtnStroke.Color = Color3.fromRGB(30, 25, 35)
-			cardStroke.Color = Color3.fromRGB(60, 50, 70)
+			-- cardStroke.Color = Color3.fromRGB(60, 50, 70)
 		elseif weaponData.CoinPrice == 0 then
 			coinButton.Text = "? EQUIP FREE"
 			coinButton.TextSize = 14
 			coinButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
 			coinBtnStroke.Color = Color3.fromRGB(0, 100, 200)
-			cardStroke.Color = weaponData.RarityColor
+			-- cardStroke.Color = weaponData.RarityColor
 		elseif playerCoins < weaponData.CoinPrice then
 			coinButton.Text = "?? " .. weaponData.CoinPrice .. " Coins"
 			coinButton.TextSize = 14
 			coinButton.BackgroundColor3 = Color3.fromRGB(60, 65, 85)
 			coinBtnStroke.Color = Color3.fromRGB(30, 35, 50)
-			cardStroke.Color = Color3.fromRGB(50, 60, 90)
+			-- -- cardStroke.Color = Color3.fromRGB(50, 60, 90)
 		else
 			coinButton.Text = "?? " .. weaponData.CoinPrice .. " (1 Round)"
 			coinButton.TextSize = 14
 			coinButton.BackgroundColor3 = Color3.fromRGB(0, 200, 80)
 			coinBtnStroke.Color = Color3.fromRGB(0, 100, 40)
-			cardStroke.Color = weaponData.RarityColor
+			-- cardStroke.Color = weaponData.RarityColor
 		end
 
 		if weaponData.RobuxPrice > 0 then
