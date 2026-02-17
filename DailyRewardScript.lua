@@ -24,6 +24,22 @@ local gameValues = RS:FindFirstChild("GameValues")
 local gameState = gameValues and gameValues:FindFirstChild("GameState")
 local iconInspectCount = 0
 
+-- Hide panel when game state changes to "Playing"
+if gameState then
+	gameState.Changed:Connect(function(newState)
+		if newState == "Playing" and panel.Visible then
+			panel.Visible = false
+			onPad = false
+			-- #region agent log
+			cdbg("DR_STATE", "DailyRewardScript:stateChange", "Panel hidden (game state changed to Playing)", {
+				panelVisible = panel.Visible,
+				gameState = newState,
+			})
+			-- #endregion
+		end
+	end)
+end
+
 -- #region agent log
 local reDbg = RS:WaitForChild("RemoteEvents", 10)
 local ClientDebugLog = reDbg and reDbg:FindFirstChild("ClientDebugLog")
@@ -115,7 +131,7 @@ task.spawn(function()
 		-- #endregion
 		
 		local dist = (hrp.Position - pad.Position).Magnitude
-		if dist < 7 and not onPad then
+		if dist < 7 and not onPad and (not gameState or gameState.Value ~= "Playing") then
 			onPad = true
 			-- #region agent log
 			cdbg("DR_PAD", "DailyRewardScript:padLoop", "ON PAD - requesting data", {
@@ -149,7 +165,7 @@ task.spawn(function()
 					end
 				end
 			end
-		elseif dist >= 10 then
+		elseif dist >= 10 or onPad or (gameState and gameState.Value == "Playing") then
 			onPad = false
 			panel.Visible = false
 			-- #region agent log

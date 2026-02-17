@@ -51,8 +51,22 @@ local function killAllPlayers(requestingPlayer)
 			if humanoid and humanoid.Health > 0 then
 				humanoid.Health = 0
 				killedCount = killedCount + 1
+				
+				-- Notify the eliminated player
+				local notifyRemote = ReplicatedStorage:FindFirstChild("RemoteEvents") 
+					and ReplicatedStorage.RemoteEvents:FindFirstChild("NotifyClient")
+				if notifyRemote then
+					notifyRemote:FireClient(player, "💀 You were eliminated!", "Another player used Kill All", 3, "error")
+				end
 			end
 		end
+	end
+	
+	-- Notify the purchaser with kill count
+	local notifyRemote = ReplicatedStorage:FindFirstChild("RemoteEvents") 
+		and ReplicatedStorage.RemoteEvents:FindFirstChild("NotifyClient")
+	if notifyRemote then
+		notifyRemote:FireClient(requestingPlayer, "💀 Kill All!", "Eliminated " .. killedCount .. " players!", 3, "success")
 	end
 	
 	print(string.format("💀 %s killed %d players", requestingPlayer.Name, killedCount))

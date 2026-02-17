@@ -6,10 +6,13 @@
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local DataStoreService = game:GetService("DataStoreService")
+local MPS = game:GetService("MarketplaceService")
 
 -- ============================================
 -- CONFIGURATION - Easy to customize rewards
 -- ============================================
+local STARTERPACK_GAMEPASS_ID = 1708836892 -- Starter Pack gamepass ID
+
 local STARTER_PACK_REWARDS = {
 	Coins = 5000,
 	Trail = "Blue",
@@ -172,6 +175,21 @@ end
 -- CLAIM HANDLER
 -- ============================================
 claimEvent.OnServerEvent:Connect(function(player)
+	-- Check gamepass ownership FIRST
+	local ownsGamepass = false
+	local success, owns = pcall(function()
+		return MPS:UserOwnsGamePassAsync(player.UserId, STARTERPACK_GAMEPASS_ID)
+	end)
+	
+	if success then
+		ownsGamepass = owns
+	end
+	
+	if not ownsGamepass then
+		notifyPlayer(player, "⚠️ Gamepass Required", "You need the Starter Pack gamepass to claim rewards!", 3, "error")
+		return
+	end
+	
 	-- Check if already claimed
 	if hasClaimedStarterPack(player) then
 		notifyPlayer(player, "Already Claimed", "You've already claimed your starter pack!", 3, "warning")
