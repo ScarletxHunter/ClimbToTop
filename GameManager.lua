@@ -91,17 +91,18 @@ local roundEndTriggered = false
 -- ============================================
 
 local function getStartLocations()
-	local locations = {}
-	for _, child in pairs(workspace:GetChildren()) do
-		if child:IsA("BasePart") and child.Name:match("^StartHere%d*$") then
-			table.insert(locations, child)
+	local starts = {}
+	for _, obj in pairs(workspace:GetDescendants()) do
+		if obj.Name == "Start" and obj:IsA("BasePart") then
+			table.insert(starts, obj)
 		end
 	end
-	if #locations == 0 then
-		local single = workspace:FindFirstChild("StartHere")
-		if single then table.insert(locations, single) end
+	
+	if #starts == 0 then
+		warn("⚠️ No 'Start' parts found in workspace! Players may spawn incorrectly.")
 	end
-	return locations
+	
+	return starts
 end
 
 -- ============================================
@@ -140,19 +141,26 @@ end
 
 local function teleportPlayersToRoundStart()
 	local startLocations = getStartLocations()
+	
 	if #startLocations == 0 then
-		warn("?? No StartHere parts found!")
+		warn("⚠️ No start locations found! Teleporting to lobby instead.")
+		teleportPlayersToLobby()
 		return
 	end
-	local allPlayers = Players:GetPlayers()
-	for i, plr in ipairs(allPlayers) do
+	
+	local allPlayers = {}
+	for _, plr in pairs(Players:GetPlayers()) do
 		if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-			local startPart = startLocations[((i - 1) % #startLocations) + 1]
-			local offset = Vector3.new(math.random(-5, 5), 3, math.random(-5, 5))
-			plr.Character.HumanoidRootPart.CFrame = startPart.CFrame * CFrame.new(offset)
+			table.insert(allPlayers, plr)
 		end
 	end
-	print("? Teleported", #allPlayers, "players across", #startLocations, "start location(s)")
+
+	for i, plr in ipairs(allPlayers) do
+		local startPart = startLocations[((i - 1) % #startLocations) + 1]
+		local offset = Vector3.new(math.random(-5, 5), 3, math.random(-5, 5))
+		plr.Character.HumanoidRootPart.CFrame = startPart.CFrame * CFrame.new(offset)
+	end
+	print("✅ Teleported", #allPlayers, "players across", #startLocations, "start location(s)")
 end
 
 -- ============================================
@@ -177,10 +185,10 @@ end
 -- ============================================
 
 Players.PlayerAdded:Connect(function(plr)
-	-- Mark as late joiner if round is active
-	if GameState.Value == "Playing" then
+	-- Mark as late joiner if round is active OR voting
+	if GameState.Value == "Playing" or GameState.Value == "Voting" then
 		lateJoiners[plr.UserId] = true
-		print("?? " .. plr.Name .. " joined mid-round, will spawn in lobby")
+		print("⏸️ " .. plr.Name .. " joined during " .. GameState.Value .. ", will spawn in lobby")
 	end
 
 	plr.CharacterAdded:Connect(function()
@@ -191,13 +199,13 @@ Players.PlayerAdded:Connect(function(plr)
 				teleportPlayerToLobby(plr)
 				print("?? Late joiner " .. plr.Name .. " sent to lobby")
 			else
-				-- EXISTING player who reset ? back to map start
+				-- EXISTING player who reset → back to map start
 				local startLocations = getStartLocations()
 				if #startLocations > 0 and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 					local randomStart = startLocations[math.random(1, #startLocations)]
 					local offset = Vector3.new(math.random(-5, 5), 3, math.random(-5, 5))
 					plr.Character.HumanoidRootPart.CFrame = randomStart.CFrame * CFrame.new(offset)
-					print("?? " .. plr.Name .. " reset ? back to map start")
+					print("🔄 " .. plr.Name .. " reset → back to map start")
 				end
 			end
 		else
@@ -299,8 +307,22 @@ end
 -- ============================================
 
 local function intermissionPhase()
-	print("? INTERMISSION PHASE")
-	lateJoiners = {} -- clear late joiners for new round
+	print("🏠 INTERMISSION PHASE")
+
+	-- Only clear lateJoiners who have left the game
+	local currentPlayers = {}
+	for _, plr in pairs(Players:GetPlayers()) do
+		currentPlayers[plr.UserId] = true
+	end
+	
+	for userId, _ in pairs(lateJoiners) do
+		if not currentPlayers[userId] then
+			lateJoiners[userId] = nil
+			print("🧹 Removed late joiner who left: UserID " .. userId)
+		end
+	end
+	
+	-- Clear winners and reset state
 	MapLoader.UnloadMap()
 	ObjectSpawner.StopSpawning()
 	CoinSpawner.StopSpawning()
@@ -332,7 +354,11 @@ local function votingPhase()
 end
 
 local function roundPhase(mapName)
-	print("?? ROUND PHASE - Loading map:", mapName)
+	print("🏁 ROUND PHASE - Loading map:", mapName)
+
+	-- Clear late joiners from previous round (players are ready for new round)
+	lateJoiners = {}
+	print("✅ Late joiners cleared before round starts")
 
 	-- Fade to black
 	SoundManager.PlaySFXForAll("Transition")
@@ -515,12 +541,32 @@ end
 local function gameLoop()
 	while true do
 		repeat
-			print("? Waiting for players... (" .. #Players:GetPlayers() .. "/" .. CONFIG.MinPlayers .. ")")
+			print("⏳ Waiting for players... (" .. #Players:GetPlayers() .. "/" .. CONFIG.MinPlayers .. ")")
 			task.wait(2)
 		until enoughPlayers()
 
+		-- Recheck before starting intermission
+		if not enoughPlayers() then 
+			print("⚠️ Not enough players, restarting wait...")
+			continue 
+		end
+		
 		intermissionPhase()
+		
+		-- Recheck after intermission before voting
+		if not enoughPlayers() then 
+			print("⚠️ Not enough players after intermission, restarting...")
+			continue 
+		end
+		
 		local mapName = votingPhase()
+		
+		-- Recheck before round starts
+		if not enoughPlayers() then 
+			print("⚠️ Not enough players after voting, restarting...")
+			continue 
+		end
+		
 		roundPhase(mapName)
 		roundEndPhase()
 	end
