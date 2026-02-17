@@ -409,7 +409,7 @@ local function roundPhase(mapName)
 		warn("CoinSpawner.StartSpawning failed:", errCoin)
 	end
 
-	-- Timer countdown ? also check if roundActive was set to false by win detection
+	-- Timer countdown - also check if roundActive was set to false by win detection
 	Timer.Value = CONFIG.RoundTime
 	for i = CONFIG.RoundTime, 0, -1 do
 		if not roundActive then break end
