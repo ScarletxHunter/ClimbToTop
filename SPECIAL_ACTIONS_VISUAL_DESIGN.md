@@ -199,7 +199,7 @@ Skip Button:
   Height: 70px
 
 Total Height (both buttons + gap):
-  170px (70 + 10 + 70 + 20 margins)
+  150px (70 + 10 + 70)
 ```
 
 ## 🖼️ ASCII Art Preview
