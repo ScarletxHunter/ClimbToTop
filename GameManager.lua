@@ -89,7 +89,7 @@ local roundStartTime = 0
 local winConnection = nil
 
 -- Admin hooks for round control
--- BUGFIX: These hooks are checked inside the timer loop to ensure Timer.Value stays synced
+-- BUGFIX: These hooks set flags that are checked inside the timer loop to ensure Timer.Value stays synced
 _G.AdminEndRound = function()
 	roundActive = false
 	_G.AdminForceEndRound = true
@@ -436,7 +436,7 @@ local function roundPhase(mapName)
 		-- This ensures proper handling when winners trigger early round end
 		if not roundActive then 
 			-- Timer was interrupted by winner or admin - ensure Timer.Value is synced to current value
-			-- Note: On first iteration (i=120), this assignment is redundant but kept for code clarity
+			-- Note: On first iteration (i=CONFIG.RoundTime), this assignment is redundant but kept for code clarity
 			Timer.Value = i
 			print("⏸️ Round ended early at " .. i .. " seconds remaining")
 			break 
