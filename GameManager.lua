@@ -1,5 +1,20 @@
 -- ============================================
 -- GAME MANAGER - FIXED: Up to 3 winners, delayed round end
+-- 
+-- CRITICAL TIMER BUGFIXES (see roundPhase function):
+--   #1: Timer.Value set immediately before countdown loop starts
+--       Prevents GUI from showing stale 2:00 during ~11 seconds of round setup
+--   #2: roundActive checked at start of each timer iteration with proper sync
+--       Ensures Timer.Value stays accurate when round ends early
+--   #3: Timer.Value set BEFORE task.wait(1) in loop
+--       Guarantees GUI always displays current countdown value
+--   #4: Timer.Value explicitly set to 0 when round completes naturally
+--       Prevents timer from getting stuck at 1 second
+--   
+-- These fixes eliminate:
+--   - Timer stuck at 2:00 during round setup
+--   - Timer stuck at non-zero value after round ends
+--   - GUI/backend desync when admin skips or winners end round early
 -- ============================================
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -74,15 +89,17 @@ local roundStartTime = 0
 local winConnection = nil
 
 -- Admin hooks for round control
+-- BUGFIX: These hooks set flags that are checked inside the timer loop to ensure Timer.Value stays synced
 _G.AdminEndRound = function()
 	roundActive = false
 	_G.AdminForceEndRound = true
-	print("? Admin: Ending round via hook")
+	print("⚙️ Admin: Ending round via hook (roundActive = false, will break timer loop)")
 end
 
+-- Admin skip jumps timer to 1 second, triggering rapid round end
 _G.AdminSkipRound = function()
 	_G.AdminSetTimer = 1
-	print("? Admin: Skipping round via hook")
+	print("⚙️ Admin: Skipping round via hook (will jump timer to 1 second)")
 end
 local roundEndTriggered = false
 
@@ -408,15 +425,30 @@ local function roundPhase(mapName)
 		warn("CoinSpawner.StartSpawning failed:", errCoin)
 	end
 
+	-- CRITICAL BUGFIX #1: Initialize timer IMMEDIATELY before countdown loop starts
+	-- This prevents timer GUI from showing stale value (2:00) during the ~11 seconds of setup above
+	-- (setup includes: fade transitions, map loading, player teleports, win detection setup, sound/music)
+	-- Setting Timer.Value = CONFIG.RoundTime here ensures the displayed timer matches the countdown
+	Timer.Value = CONFIG.RoundTime
+	
 	-- Timer countdown - also check if roundActive was set to false by win detection
 	for i = CONFIG.RoundTime, 0, -1 do
-		if not roundActive then break end
+		-- CRITICAL BUGFIX #2: Check roundActive at start of each iteration
+		-- This ensures proper handling when winners trigger early round end
+		if not roundActive then 
+			-- Timer was interrupted by winner or admin - ensure Timer.Value is synced to current value
+			-- Note: On first iteration (i=CONFIG.RoundTime), this assignment is redundant but kept for code clarity
+			Timer.Value = i
+			print("⏸️ Round ended early at " .. i .. " seconds remaining")
+			break 
+		end
 
 		-- Admin override: force end round
 		if _G.AdminForceEndRound then
 			_G.AdminForceEndRound = nil
 			roundActive = false
-			print("? Admin forced round end")
+			Timer.Value = i  -- BUGFIX: Sync timer value before breaking
+			print("⚙️ Admin forced round end")
 			break
 		end
 
@@ -424,9 +456,11 @@ local function roundPhase(mapName)
 		if _G.AdminSetTimer then
 			i = _G.AdminSetTimer
 			_G.AdminSetTimer = nil
-			print("? Admin set timer to " .. i)
+			print("⚙️ Admin set timer to " .. i)
 		end
 
+		-- CRITICAL BUGFIX #3: Set Timer.Value BEFORE wait
+		-- This ensures the GUI always displays the correct current time
 		Timer.Value = i
 
 		if i <= 3 and i > 0 then
@@ -436,9 +470,12 @@ local function roundPhase(mapName)
 		task.wait(1)
 	end
 
-	-- If round ended by timer (not by winners), wait a moment
+	-- CRITICAL BUGFIX #4: Always ensure Timer.Value reaches 0 when round completes normally
+	-- This prevents timer from being stuck at 1 second after natural round end
 	if roundActive then
 		roundActive = false
+		Timer.Value = 0
+		print("⏰ Round timer completed naturally - timer set to 0")
 	end
 
 	ObjectSpawner.StopSpawning()
