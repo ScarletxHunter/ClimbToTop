@@ -5,7 +5,39 @@ This document explains the new features added and how to configure them.
 
 ## Features Added
 
-### 1. ✅ Skill Bomber Timer Fix
+### 1. 🎮 Main Menu GUI (StarterGui)
+- **New File:** `MainMenuGui.lua`
+- **Description:** Complete main menu system with modern UI design and ImageButtons
+- **Features:**
+  - Semi-transparent dark background overlay
+  - Main menu frame with purple/dark theme matching existing GUIs
+  - All buttons are ImageButtons (not TextButtons) with placeholder images
+  - **Buttons included:**
+    - ▶ **Play Button** - Green themed, ready for game start logic
+    - ⚙ **Settings Button** - Purple themed, ready for settings toggle
+    - 🛒 **Shop Button** - Gold themed, ready for shop integration
+    - 🏆 **Leaderboard Button** - Blue themed, ready for leaderboard display
+    - ✕ **Close Button** - Red themed, positioned in top-right corner
+  - Modern UI elements:
+    - UICorner for all rounded edges
+    - UIStroke for button outlines with hover effects
+    - UIAspectRatioConstraints for consistent sizing across devices
+    - UIPadding for proper spacing
+    - UIListLayout for organized button placement
+  - **Mobile-friendly:**
+    - Automatic scaling based on screen size
+    - Touch-enabled with proper button sizing
+    - Responsive layout adjustments for small screens
+  - **Interactive effects:**
+    - Hover animations (color changes, stroke thickness)
+    - Press/click animations (button size changes)
+    - Smooth opening/closing animations
+  - **Keyboard shortcut:** Press ESC to toggle menu
+  - **Global function:** `_G.ToggleMainMenu()` available for scripts
+- **Placeholder Images:** All ImageButtons use `rbxassetid://0` - replace with actual asset IDs
+- **Ready for Scripting:** All buttons have descriptive names and placeholder click handlers
+
+### 2. ✅ Skill Bomber Timer Fix
 - **Fixed:** Removed "??" question marks from the bomber skill countdown
 - **Changed:** Now displays "💣 3", "💣 2", "💣 1" instead of "?? 3", etc.
 - **File:** `SkillHandler.lua` (lines 765, 774)
@@ -46,6 +78,112 @@ This document explains the new features added and how to configure them.
   - Only works during active rounds
 
 ## Setup Instructions
+
+### For Main Menu GUI:
+
+The MainMenuGui is ready to use with minimal setup:
+
+#### Step 1: Place the Script
+1. In Roblox Studio, place `MainMenuGui.lua` in **StarterPlayer → StarterPlayerScripts** or **StarterGui**
+2. The script will automatically create the GUI when a player joins
+
+#### Step 2: Replace Placeholder Images (Optional)
+All ImageButtons use placeholder image IDs (`rbxassetid://0`). To add custom images:
+
+1. Upload your images to Roblox (Create → Development Items → Decals)
+2. Get the asset IDs for each image
+3. Update the image IDs in `MainMenuGui.lua`:
+   - **Title Image:** Line ~73 - `titleLabel.Image = "rbxassetid://YOUR_ID_HERE"`
+   - **Play Button:** Line ~133 - Pass image ID to `createImageButton`
+   - **Settings Button:** Line ~136 - Pass image ID to `createImageButton`
+   - **Shop Button:** Line ~139 - Pass image ID to `createImageButton`
+   - **Leaderboard Button:** Line ~142 - Pass image ID to `createImageButton`
+   - **Close Button:** Line ~151 - `closeButton.Image = "rbxassetid://YOUR_ID_HERE"`
+
+Example:
+```lua
+local playButton = createImageButton("PlayButton", 1, "▶ PLAY", "rbxassetid://123456789")
+```
+
+#### Step 3: Connect Button Functionality
+The buttons have placeholder click handlers. Connect them to your game logic:
+
+**Play Button** (Line ~267):
+```lua
+playButton.Activated:Connect(function()
+    -- Add your game start logic
+    -- Example: Fire a RemoteEvent to start the game
+    local re = game:GetService("ReplicatedStorage"):FindFirstChild("RemoteEvents")
+    if re and re:FindFirstChild("StartGame") then
+        re.StartGame:FireServer()
+    end
+    _G.ToggleMainMenu()  -- Close menu after clicking
+end)
+```
+
+**Settings Button** (Line ~272):
+```lua
+settingsButton.Activated:Connect(function()
+    -- Toggle existing settings GUI
+    if _G.OpenSettings then
+        _G.OpenSettings()
+    end
+    _G.ToggleMainMenu()  -- Close main menu
+end)
+```
+
+**Shop Button** (Line ~278):
+```lua
+shopButton.Activated:Connect(function()
+    -- Toggle existing shop GUI
+    local shopGui = plr.PlayerGui:FindFirstChild("NewShopGui")
+    if shopGui then
+        local content = shopGui:FindFirstChild("Content")
+        if content then
+            content.Visible = not content.Visible
+        end
+    end
+    _G.ToggleMainMenu()  -- Close main menu
+end)
+```
+
+**Leaderboard Button** (Line ~284):
+```lua
+leaderboardButton.Activated:Connect(function()
+    -- Toggle leaderboard
+    local lbGui = plr.PlayerGui:FindFirstChild("NewLeaderboardGui")
+    if lbGui then
+        local panel = lbGui:FindFirstChild("Panel")
+        if panel then
+            panel.Visible = not panel.Visible
+        end
+    end
+    _G.ToggleMainMenu()  -- Close main menu
+end)
+```
+
+#### Step 4: Control Menu Visibility
+Use the global function to show/hide the menu from other scripts:
+
+```lua
+-- From any script:
+_G.ToggleMainMenu()  -- Toggle visibility
+
+-- Or directly:
+local mainMenu = plr.PlayerGui:FindFirstChild("MainMenuGui")
+if mainMenu then
+    local frame = mainMenu:FindFirstChild("MainMenuFrame")
+    local bg = mainMenu:FindFirstChild("Background")
+    frame.Visible = true  -- or false
+    bg.Visible = true     -- or false
+end
+```
+
+#### Step 5: Keyboard Shortcut
+Players can press **ESC** to toggle the menu (already configured in the script).
+
+#### Step 6: Mobile Testing
+The GUI automatically adjusts for mobile devices. Test on different screen sizes to ensure proper scaling.
 
 ### For StarterPack GUI:
 1. The GUI is ready to use as-is
@@ -102,6 +240,7 @@ If you don't have an "End" or "GamepassEnd" part in your maps:
 
 ## File Locations
 All new files are in the root directory:
+- `MainMenuGui.lua` (new - should be in StarterPlayerScripts or StarterGui)
 - `SkillHandler.lua` (modified)
 - `StarterPackGui.lua` (new - should be in StarterGui or PlayerGui)
 - `SpecialActionsGui.lua` (new - should be in StarterGui or PlayerGui)
@@ -117,5 +256,7 @@ Check `SoundManager.lua` - this handles all game sounds. You can modify the soun
 
 ## Notes
 - All GUIs match the existing purple/dark theme used in TrailShop and GamepassShop
+- MainMenuGui uses modern UI design with ImageButtons, UICorner, UIStroke, and mobile-friendly scaling
+- All ImageButtons in MainMenuGui use placeholder images (rbxassetid://0) that should be replaced with actual assets
 - Special action buttons only appear during active rounds (Playing state)
 - Backpack tool UI is already disabled in LoadingScreenScript.lua and TransitionScript.lua
