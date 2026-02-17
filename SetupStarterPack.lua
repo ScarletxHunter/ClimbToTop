@@ -84,15 +84,24 @@ local claimedPlayers = {} -- In-memory cache: {[UserId] = true}
 
 -- Cache PlayerDataManager to avoid repeated require calls
 local PlayerDataManager = nil
+
 local function getPlayerDataManager()
+	-- Return cached instance if we already found it
 	if PlayerDataManager then return PlayerDataManager end
 	
+	-- Try to find and require PlayerDataManager
 	local success, result = pcall(function()
-		return require(game.ServerScriptService:FindFirstChild("PlayerDataManager") 
-			or game.ServerScriptService:FindFirstChild("GameScripts"):FindFirstChild("PlayerDataManager"))
+		local pdm = game.ServerScriptService:FindFirstChild("PlayerDataManager") 
+			or (game.ServerScriptService:FindFirstChild("GameScripts") 
+				and game.ServerScriptService.GameScripts:FindFirstChild("PlayerDataManager"))
+		if pdm then
+			return require(pdm)
+		end
+		return nil
 	end)
 	
-	if success then
+	-- Cache only if successful
+	if success and result then
 		PlayerDataManager = result
 	end
 	
