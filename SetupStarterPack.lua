@@ -82,6 +82,23 @@ local STARTER_PACK_REWARDS = {
 local StarterPackStore = DataStoreService:GetDataStore("StarterPack_V1")
 local claimedPlayers = {} -- In-memory cache: {[UserId] = true}
 
+-- Cache PlayerDataManager to avoid repeated require calls
+local PlayerDataManager = nil
+local function getPlayerDataManager()
+	if PlayerDataManager then return PlayerDataManager end
+	
+	local success, result = pcall(function()
+		return require(game.ServerScriptService:FindFirstChild("PlayerDataManager") 
+			or game.ServerScriptService:FindFirstChild("GameScripts"):FindFirstChild("PlayerDataManager"))
+	end)
+	
+	if success then
+		PlayerDataManager = result
+	end
+	
+	return PlayerDataManager
+end
+
 -- ============================================
 -- HELPER: Load claim status from DataStore
 -- ============================================
@@ -119,6 +136,8 @@ end
 -- HELPER: Give rewards to player
 -- ============================================
 local function giveRewards(player)
+	local PDM = getPlayerDataManager()
+	
 	-- Give Coins
 	if STARTER_PACK_REWARDS.Coins and STARTER_PACK_REWARDS.Coins > 0 then
 		local leaderstats = player:FindFirstChild("leaderstats")
@@ -130,27 +149,19 @@ local function giveRewards(player)
 		end
 		
 		-- Also update PlayerDataManager if available
-		pcall(function()
-			local PDM = require(game.ServerScriptService:FindFirstChild("PlayerDataManager") 
-				or game.ServerScriptService:FindFirstChild("GameScripts"):FindFirstChild("PlayerDataManager"))
-			if PDM and PDM.GetData then
-				local pData = PDM.GetData(player)
-				if pData then 
-					pData.Coins = (pData.Coins or 0) + STARTER_PACK_REWARDS.Coins
-				end
+		if PDM and PDM.GetData then
+			local pData = PDM.GetData(player)
+			if pData then 
+				pData.Coins = (pData.Coins or 0) + STARTER_PACK_REWARDS.Coins
 			end
-		end)
+		end
 	end
 	
 	-- Give Trail
 	if STARTER_PACK_REWARDS.Trail and STARTER_PACK_REWARDS.Trail ~= "" then
-		pcall(function()
-			local PDM = require(game.ServerScriptService:FindFirstChild("PlayerDataManager") 
-				or game.ServerScriptService:FindFirstChild("GameScripts"):FindFirstChild("PlayerDataManager"))
-			if PDM and PDM.AddTrail then
-				PDM.AddTrail(player, STARTER_PACK_REWARDS.Trail)
-			end
-		end)
+		if PDM and PDM.AddTrail then
+			PDM.AddTrail(player, STARTER_PACK_REWARDS.Trail)
+		end
 	end
 	
 	-- Give Wins
@@ -164,16 +175,12 @@ local function giveRewards(player)
 		end
 		
 		-- Also update PlayerDataManager if available
-		pcall(function()
-			local PDM = require(game.ServerScriptService:FindFirstChild("PlayerDataManager") 
-				or game.ServerScriptService:FindFirstChild("GameScripts"):FindFirstChild("PlayerDataManager"))
-			if PDM and PDM.GetData then
-				local pData = PDM.GetData(player)
-				if pData then 
-					pData.Wins = (pData.Wins or 0) + STARTER_PACK_REWARDS.Wins
-				end
+		if PDM and PDM.GetData then
+			local pData = PDM.GetData(player)
+			if pData then 
+				pData.Wins = (pData.Wins or 0) + STARTER_PACK_REWARDS.Wins
 			end
-		end)
+		end
 	end
 end
 

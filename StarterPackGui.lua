@@ -11,6 +11,9 @@ local RS = game:GetService("ReplicatedStorage")
 local plr = Players.LocalPlayer
 local playerGui = plr:WaitForChild("PlayerGui")
 
+-- Configuration
+local AUTO_PROMPT_DELAY = 2.5 -- Seconds to wait before auto-opening for new players
+
 -- Create the main ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "StarterPackGui"
@@ -258,8 +261,8 @@ task.spawn(function()
 	local checkFunction = remoteEvents:FindFirstChild("CheckStarterPackClaim")
 	if not checkFunction then return end
 	
-	-- Wait 2.5 seconds after join before prompting
-	task.wait(2.5)
+	-- Wait before prompting to allow other UI elements to load
+	task.wait(AUTO_PROMPT_DELAY)
 	
 	-- Check if player has already claimed
 	local hasClaimed = false
