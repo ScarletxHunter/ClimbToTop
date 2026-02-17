@@ -170,7 +170,6 @@ end
 
 local function startTimer(duration, stateName)
 	GameState.Value = stateName
-	Timer.Value = duration
 	for i = duration, 0, -1 do
 		Timer.Value = i
 		task.wait(1)
@@ -410,7 +409,6 @@ local function roundPhase(mapName)
 	end
 
 	-- Timer countdown - also check if roundActive was set to false by win detection
-	Timer.Value = CONFIG.RoundTime
 	for i = CONFIG.RoundTime, 0, -1 do
 		if not roundActive then break end
 
