@@ -93,7 +93,8 @@ local roundEndTriggered = false
 local function getStartLocations()
 	local starts = {}
 	for _, obj in pairs(workspace:GetDescendants()) do
-		if obj.Name == "Start" and obj:IsA("BasePart") then
+		-- Match parts named "Start" OR starting with "StartHere"
+		if obj:IsA("BasePart") and (obj.Name == "Start" or obj.Name:match("^StartHere")) then
 			table.insert(starts, obj)
 		end
 	end
