@@ -196,6 +196,7 @@ toggleBtn.BorderSizePixel = 0
 toggleBtn.Text = "🎁"
 toggleBtn.Font = Enum.Font.GothamBold
 toggleBtn.TextSize = 28
+toggleBtn.Visible = false  -- Initially hidden, shown only if player owns gamepass
 toggleBtn.Parent = screenGui
 
 local toggleCorner = Instance.new("UICorner")
@@ -248,10 +249,11 @@ local function checkGamepassOwnership()
 	return ownsGamepass
 end
 
--- Check ownership on load
+-- Check ownership on load and show toggle button if player owns gamepass
 task.spawn(function()
 	task.wait(0.5) -- Brief delay to allow services to initialize
-	checkGamepassOwnership()
+	local hasGamepass = checkGamepassOwnership()
+	toggleBtn.Visible = hasGamepass  -- Only show toggle button if they own the gamepass
 end)
 
 toggleBtn.MouseButton1Click:Connect(function()
@@ -306,6 +308,9 @@ MPS.PromptGamePassPurchaseFinished:Connect(function(player, gamepassId, wasPurch
 		ownsGamepass = true
 		claimBtn.Text = "✓ CLAIM STARTER PACK"
 		claimBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
+		
+		-- Show the toggle button now that player owns the gamepass
+		toggleBtn.Visible = true
 		
 		-- Show success notification
 		if _G.Notify then

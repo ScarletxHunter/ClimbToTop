@@ -7,10 +7,27 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
 
--- Product IDs - these should match the client-side values
--- Example: local KILL_ALL_PRODUCT_ID = 123456789
-local KILL_ALL_PRODUCT_ID = 0  -- TODO: Set up dev product and add ID
-local SKIP_PRODUCT_ID = 0       -- TODO: Set up dev product and add ID
+-- Product IDs - these should match the client-side values in SpecialActionsGui.lua
+-- IMPORTANT: Replace 0 with actual dev product IDs from Roblox Creator Dashboard
+-- Steps to configure:
+--   1. Go to Creator Dashboard > Monetization > Developer Products
+--   2. Create "Kill All Players" product and note the Product ID
+--   3. Create "Skip to Finish" product and note the Product ID
+--   4. Replace the 0 values below with your actual Product IDs
+--   5. Update the same IDs in SpecialActionsGui.lua
+local KILL_ALL_PRODUCT_ID = 0  -- ⚠️ CONFIGURE: Replace with your "Kill All Players" dev product ID
+local SKIP_PRODUCT_ID = 0       -- ⚠️ CONFIGURE: Replace with your "Skip to Finish" dev product ID
+
+-- Validation function to check if product IDs are configured
+local function areProductIDsConfigured()
+	return KILL_ALL_PRODUCT_ID > 0 and SKIP_PRODUCT_ID > 0
+end
+
+-- Warn if products are not configured
+if not areProductIDsConfigured() then
+	warn("⚠️ SPECIAL ACTIONS: Product IDs not configured! Set KILL_ALL_PRODUCT_ID and SKIP_PRODUCT_ID in SpecialActionsHandler.lua")
+	warn("⚠️ Players will see 'Not Available' message when clicking special action buttons")
+end
 
 -- Get or create RemoteEvents
 local remoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
