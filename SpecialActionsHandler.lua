@@ -119,8 +119,19 @@ end)
 -- ============================================
 -- DEV PRODUCT PURCHASE HANDLING
 -- ============================================
--- This is where you'd handle the actual purchases
--- You would need to set up ProcessReceipt to grant the actions
+-- IMPORTANT: This ProcessReceipt handler is provided as reference code.
+-- You MUST integrate this into your existing ProcessReceipt in CoinRemotes.lua
+-- to avoid overwriting the existing coin purchase handling.
+--
+-- Steps to integrate:
+-- 1. Open CoinRemotes.lua
+-- 2. Find the existing MarketplaceService.ProcessReceipt function
+-- 3. Add the product ID checks below to that function
+-- 4. Do NOT uncomment the line below - use the existing ProcessReceipt
+-- ============================================
+
+--[[
+-- REFERENCE CODE - Integrate this into CoinRemotes.lua ProcessReceipt:
 
 local function processReceipt(receiptInfo)
 	local player = Players:GetPlayerByUserId(receiptInfo.PlayerId)
@@ -138,16 +149,9 @@ local function processReceipt(receiptInfo)
 		return Enum.ProductPurchaseDecision.PurchaseGranted
 	end
 	
+	-- Let existing handler process other products
 	return Enum.ProductPurchaseDecision.NotProcessedYet
 end
-
--- Only set ProcessReceipt if product IDs are configured
-if KILL_ALL_PRODUCT_ID > 0 or SKIP_PRODUCT_ID > 0 then
-	-- Note: In a real implementation, you'd want to merge this with existing ProcessReceipt
-	-- if one already exists (like in CoinRemotes.lua)
-	-- MarketplaceService.ProcessReceipt = processReceipt
-	warn("⚠️ Special Actions: Dev product purchase handlers ready but not enabled")
-	warn("⚠️ Merge processReceipt with existing handler in CoinRemotes.lua")
-end
+--]]
 
 print("✅ Special Actions Handler loaded")

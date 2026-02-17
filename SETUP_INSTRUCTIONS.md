@@ -66,26 +66,26 @@ This document explains the new features added and how to configure them.
 
 #### Step 2: Configure Product IDs
 1. Open `SpecialActionsGui.lua`
-2. Update lines 14-15 with your product IDs:
+2. Update lines with KILL_ALL_PRODUCT_ID and SKIP_PRODUCT_ID:
    ```lua
-   local KILL_ALL_PRODUCT_ID = 123456789  -- Replace with your actual product ID
-   local SKIP_PRODUCT_ID = 987654321      -- Replace with your actual product ID
+   local KILL_ALL_PRODUCT_ID = 1234567890  -- Example: Replace with your actual product ID
+   local SKIP_PRODUCT_ID = 9876543210      -- Example: Replace with your actual product ID
    ```
 
 3. Open `SpecialActionsHandler.lua`
-4. Update lines 10-11 with the same product IDs:
+4. Update the same product ID constants with matching values:
    ```lua
-   local KILL_ALL_PRODUCT_ID = 123456789  -- Replace with your actual product ID
-   local SKIP_PRODUCT_ID = 987654321      -- Replace with your actual product ID
+   local KILL_ALL_PRODUCT_ID = 1234567890  -- Must match client-side value
+   local SKIP_PRODUCT_ID = 9876543210      -- Must match client-side value
    ```
 
 #### Step 3: Integrate Purchase Handler
 The file `CoinRemotes.lua` already has a `ProcessReceipt` function. You need to merge the special actions handler:
 
 1. Open `CoinRemotes.lua`
-2. Find the `MarketplaceService.ProcessReceipt` function (around line 80)
+2. Search for the `MarketplaceService.ProcessReceipt` function
 3. Add cases for the new product IDs before the existing coin product handling
-4. Reference the logic in `SpecialActionsHandler.lua` (lines 118-138)
+4. Reference the logic in `SpecialActionsHandler.lua` (search for the processReceipt function)
 
 #### Step 4: Security Note
 **⚠️ IMPORTANT:** The special action buttons are now secured and will only work when:

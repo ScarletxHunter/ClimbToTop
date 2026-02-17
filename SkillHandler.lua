@@ -452,6 +452,8 @@ local function execTeleport(plr, td)
 	if not c then return false end
 	local h = c:FindFirstChild("HumanoidRootPart")
 	if not h then return false end
+	-- Distance doubled from previous 16→32 (default) and 24→48 (max) per user request
+	-- to make teleport more powerful and useful for navigating obstacles
 	local dist = math.clamp(td.SkillDistance or 32, 16, 48)
 	local look3D = h.CFrame.LookVector
 	local flatLook = Vector3.new(look3D.X, 0, look3D.Z)
