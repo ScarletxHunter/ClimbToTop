@@ -89,7 +89,7 @@ print("  ✓ Kill All button created")
 local skipBtn = Instance.new("ImageButton")
 skipBtn.Name = "SkipToFinishButton"
 skipBtn.Size = UDim2.new(0, 70, 0, 70)
-skipBtn.Position = UDim2.new(1, -90, 0.5, 0)
+skipBtn.Position = UDim2.new(1, -90, 0.5, -20)
 skipBtn.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
 skipBtn.BorderSizePixel = 0
 skipBtn.Image = ""
