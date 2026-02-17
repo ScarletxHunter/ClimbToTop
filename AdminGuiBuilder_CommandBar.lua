@@ -36,7 +36,7 @@ local border  = Color3.fromRGB(55,55,75)
 local gui = c("ScreenGui", {Name="AdminGui", ResetOnSpawn=false, ZIndexBehavior=Enum.ZIndexBehavior.Sibling, DisplayOrder=100, P=SG})
 
 -- ═══ Toggle Button ═══
-local toggleBtn = c("TextButton", {Name="ToggleBtn", Size=UDim2.new(0,48,0,48), Position=UDim2.new(1,-60,1,-130), BackgroundColor3=btnC, Text="⚙", TextColor3=txt, TextSize=24, Font=Enum.Font.GothamBold, AutoButtonColor=false, Visible=true, P=gui})
+local toggleBtn = c("TextButton", {Name="ToggleBtn", Size=UDim2.new(0,48,0,48), Position=UDim2.new(1,-60,1,-130), BackgroundColor3=btnC, Text="⚙", TextColor3=txt, TextSize=24, Font=Enum.Font.GothamBold, AutoButtonColor=false, Visible=false, P=gui})
 corner(toggleBtn,12) stroke(toggleBtn,accent,2)
 
 -- ═══ Panel ═══

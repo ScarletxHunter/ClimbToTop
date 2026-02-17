@@ -11,10 +11,14 @@ local plr = Players.LocalPlayer
 local playerGui = plr:WaitForChild("PlayerGui")
 
 -- Product IDs for dev products (these need to be set up in Roblox Studio)
--- Replace these with actual dev product IDs from your game
--- Example: local KILL_ALL_PRODUCT_ID = 123456789
-local KILL_ALL_PRODUCT_ID = 0  -- TODO: Set up dev product and add ID here
-local SKIP_PRODUCT_ID = 0       -- TODO: Set up dev product and add ID here
+-- IMPORTANT: Replace 0 with actual dev product IDs from Roblox Creator Dashboard
+-- Steps to configure:
+--   1. Go to Creator Dashboard > Monetization > Developer Products
+--   2. Create "Kill All Players" product and note the Product ID
+--   3. Create "Skip to Finish" product and note the Product ID
+--   4. Replace the 0 values below with your actual Product IDs
+local KILL_ALL_PRODUCT_ID = 0  -- ⚠️ CONFIGURE: Replace with your "Kill All Players" dev product ID
+local SKIP_PRODUCT_ID = 0       -- ⚠️ CONFIGURE: Replace with your "Skip to Finish" dev product ID
 
 -- Security: Only allow actions if product IDs are configured
 local ENABLE_SPECIAL_ACTIONS = (KILL_ALL_PRODUCT_ID > 0 and SKIP_PRODUCT_ID > 0)
