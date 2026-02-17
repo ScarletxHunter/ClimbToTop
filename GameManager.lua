@@ -170,9 +170,12 @@ end
 
 local function startTimer(duration, stateName)
 	GameState.Value = stateName
-	for i = duration, 0, -1 do
-		Timer.Value = i
-		task.wait(1)
+	local endTime = os.clock() + duration
+	while true do
+		local remaining = math.max(0, math.ceil(endTime - os.clock()))
+		Timer.Value = remaining
+		if remaining <= 0 then break end
+		task.wait(0.1)
 	end
 end
 
@@ -408,10 +411,10 @@ local function roundPhase(mapName)
 		warn("CoinSpawner.StartSpawning failed:", errCoin)
 	end
 
-	-- Timer countdown - also check if roundActive was set to false by win detection
-	for i = CONFIG.RoundTime, 0, -1 do
-		if not roundActive then break end
-
+	-- Timer countdown - resilient to lag and admin jumps
+	local endTime = os.clock() + CONFIG.RoundTime
+	local lastShown = -1
+	while roundActive do
 		-- Admin override: force end round
 		if _G.AdminForceEndRound then
 			_G.AdminForceEndRound = nil
@@ -422,18 +425,31 @@ local function roundPhase(mapName)
 
 		-- Admin override: jump timer to a specific value
 		if _G.AdminSetTimer then
-			i = _G.AdminSetTimer
+			local target = math.max(0, math.floor(_G.AdminSetTimer))
+			endTime = os.clock() + target
 			_G.AdminSetTimer = nil
-			print("? Admin set timer to " .. i)
+			print("? Admin set timer to " .. target)
 		end
 
-		Timer.Value = i
+		local remaining = math.max(0, math.ceil(endTime - os.clock()))
+		if remaining ~= lastShown then
+			lastShown = remaining
+			Timer.Value = remaining
 
-		if i <= 3 and i > 0 then
-			SoundManager.PlaySFXForAll("Countdown")
+			if remaining <= 3 and remaining > 0 then
+				SoundManager.PlaySFXForAll("Countdown")
+			end
 		end
 
-		task.wait(1)
+		if remaining <= 0 then
+			break
+		end
+
+		task.wait(0.1)
+	end
+
+	if not roundActive and Timer.Value > 0 then
+		Timer.Value = 0
 	end
 
 	-- If round ended by timer (not by winners), wait a moment
