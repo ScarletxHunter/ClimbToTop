@@ -60,7 +60,7 @@ Make sure the trail name matches exactly with the trails in your game. Common tr
 
 ### For Players
 
-1. **New Players**: When a new player joins the game, they will see the StarterPack GUI automatically pop up after a short delay (configurable via `AUTO_PROMPT_DELAY` in StarterPackGui.lua, default 2.5 seconds)
+1. **New Players**: When a new player joins the game, they will see the StarterPack GUI automatically pop up after a short delay. The delay is configurable via the `AUTO_PROMPT_DELAY` constant in StarterPackGui.lua (default: 2.5 seconds).
 2. **Claiming**: Players click the "CLAIM STARTER PACK" button to receive their rewards
 3. **One-Time Only**: Each player can only claim the starter pack once per account
 4. **Returning Players**: Players who have already claimed will not see the auto-prompt
