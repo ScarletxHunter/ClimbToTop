@@ -12,8 +12,12 @@ local playerGui = plr:WaitForChild("PlayerGui")
 
 -- Product IDs for dev products (these need to be set up in Roblox Studio)
 -- Replace these with actual dev product IDs from your game
+-- Example: local KILL_ALL_PRODUCT_ID = 123456789
 local KILL_ALL_PRODUCT_ID = 0  -- TODO: Set up dev product and add ID here
 local SKIP_PRODUCT_ID = 0       -- TODO: Set up dev product and add ID here
+
+-- Security: Only allow actions if product IDs are configured
+local ENABLE_SPECIAL_ACTIONS = (KILL_ALL_PRODUCT_ID > 0 and SKIP_PRODUCT_ID > 0)
 
 -- Create the main ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -161,6 +165,14 @@ local skipEvent = remoteEvents:FindFirstChild("SkipToFinish")
 -- ============================================
 -- Kill All Players button
 killAllBtn.MouseButton1Click:Connect(function()
+	-- Security check: Ensure product is configured
+	if KILL_ALL_PRODUCT_ID <= 0 then
+		if _G.Notify then
+			_G.Notify("⚠️ Not Available", "This feature is not yet configured.", 3, "warning")
+		end
+		return
+	end
+	
 	-- Show confirmation dialog
 	local confirmText = "Kill all players in the match?\n\nThis will cost Robux!"
 	
@@ -168,43 +180,29 @@ killAllBtn.MouseButton1Click:Connect(function()
 		_G.Confirm("💀 Kill All Players?", confirmText, function(confirmed)
 			if confirmed then
 				-- Prompt for dev product purchase
-				if KILL_ALL_PRODUCT_ID > 0 then
-					pcall(function()
-						MPS:PromptProductPurchase(plr, KILL_ALL_PRODUCT_ID)
-					end)
-				else
-					-- If no product ID set, just fire the event (for testing)
-					if killAllEvent then
-						killAllEvent:FireServer()
-					else
-						warn("⚠️ KillAllPlayers RemoteEvent not found!")
-					end
-					
-					if _G.Notify then
-						_G.Notify("💀 Kill All!", "All players eliminated!", 3, "success")
-					end
-				end
+				pcall(function()
+					MPS:PromptProductPurchase(plr, KILL_ALL_PRODUCT_ID)
+				end)
 			end
 		end)
 	else
 		-- No confirm dialog available, just prompt
-		if KILL_ALL_PRODUCT_ID > 0 then
-			pcall(function()
-				MPS:PromptProductPurchase(plr, KILL_ALL_PRODUCT_ID)
-			end)
-		else
-			-- For testing without product
-			if killAllEvent then
-				killAllEvent:FireServer()
-			else
-				warn("⚠️ KillAllPlayers RemoteEvent not found!")
-			end
-		end
+		pcall(function()
+			MPS:PromptProductPurchase(plr, KILL_ALL_PRODUCT_ID)
+		end)
 	end
 end)
 
 -- Skip to Finish Line button
 skipBtn.MouseButton1Click:Connect(function()
+	-- Security check: Ensure product is configured
+	if SKIP_PRODUCT_ID <= 0 then
+		if _G.Notify then
+			_G.Notify("⚠️ Not Available", "This feature is not yet configured.", 3, "warning")
+		end
+		return
+	end
+	
 	-- Show confirmation dialog
 	local confirmText = "Skip to the finish line?\n\nThis will cost Robux!"
 	
@@ -212,38 +210,16 @@ skipBtn.MouseButton1Click:Connect(function()
 		_G.Confirm("🏁 Skip to Finish?", confirmText, function(confirmed)
 			if confirmed then
 				-- Prompt for dev product purchase
-				if SKIP_PRODUCT_ID > 0 then
-					pcall(function()
-						MPS:PromptProductPurchase(plr, SKIP_PRODUCT_ID)
-					end)
-				else
-					-- If no product ID set, just fire the event (for testing)
-					if skipEvent then
-						skipEvent:FireServer()
-					else
-						warn("⚠️ SkipToFinish RemoteEvent not found!")
-					end
-					
-					if _G.Notify then
-						_G.Notify("🏁 Teleported!", "You've been moved to the finish!", 3, "success")
-					end
-				end
+				pcall(function()
+					MPS:PromptProductPurchase(plr, SKIP_PRODUCT_ID)
+				end)
 			end
 		end)
 	else
 		-- No confirm dialog available, just prompt
-		if SKIP_PRODUCT_ID > 0 then
-			pcall(function()
-				MPS:PromptProductPurchase(plr, SKIP_PRODUCT_ID)
-			end)
-		else
-			-- For testing without product
-			if skipEvent then
-				skipEvent:FireServer()
-			else
-				warn("⚠️ SkipToFinish RemoteEvent not found!")
-			end
-		end
+		pcall(function()
+			MPS:PromptProductPurchase(plr, SKIP_PRODUCT_ID)
+		end)
 	end
 end)
 

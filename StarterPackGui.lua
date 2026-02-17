@@ -229,15 +229,23 @@ closeBtn.MouseButton1Click:Connect(function()
 	toggleContainer(false)
 end)
 
--- Claim button (placeholder - would connect to server-side rewards)
+-- Claim button (connects to server-side rewards)
 claimBtn.MouseButton1Click:Connect(function()
-	-- This would normally trigger a RemoteEvent to give rewards
-	-- For now, just close and show notification
-	if _G.Notify then
-		_G.Notify("🎁 Claimed!", "Starter pack claimed successfully!", 3, "success")
+	-- TODO: Fire RemoteEvent to grant rewards on server
+	local claimEvent = RS:FindFirstChild("RemoteEvents") and RS.RemoteEvents:FindFirstChild("ClaimStarterPack")
+	
+	if claimEvent then
+		-- Fire server event to grant rewards
+		claimEvent:FireServer()
+		-- Server will send back success/failure via notification system
+	else
+		-- Not yet implemented - inform user
+		if _G.Notify then
+			_G.Notify("⚠️ Coming Soon", "Starter pack rewards are not yet configured!", 3, "warning")
+		end
 	end
+	
 	toggleContainer(false)
-	toggleBtn:Destroy() -- Remove the button after claiming
 end)
 
 print("✅ StarterPack GUI loaded")

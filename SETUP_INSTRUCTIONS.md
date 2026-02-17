@@ -66,17 +66,17 @@ This document explains the new features added and how to configure them.
 
 #### Step 2: Configure Product IDs
 1. Open `SpecialActionsGui.lua`
-2. Update lines 11-12 with your product IDs:
+2. Update lines 14-15 with your product IDs:
    ```lua
-   local KILL_ALL_PRODUCT_ID = YOUR_KILL_ALL_ID
-   local SKIP_PRODUCT_ID = YOUR_SKIP_ID
+   local KILL_ALL_PRODUCT_ID = 123456789  -- Replace with your actual product ID
+   local SKIP_PRODUCT_ID = 987654321      -- Replace with your actual product ID
    ```
 
 3. Open `SpecialActionsHandler.lua`
-4. Update lines 9-10 with the same product IDs:
+4. Update lines 10-11 with the same product IDs:
    ```lua
-   local KILL_ALL_PRODUCT_ID = YOUR_KILL_ALL_ID
-   local SKIP_PRODUCT_ID = YOUR_SKIP_ID
+   local KILL_ALL_PRODUCT_ID = 123456789  -- Replace with your actual product ID
+   local SKIP_PRODUCT_ID = 987654321      -- Replace with your actual product ID
    ```
 
 #### Step 3: Integrate Purchase Handler
@@ -87,19 +87,13 @@ The file `CoinRemotes.lua` already has a `ProcessReceipt` function. You need to 
 3. Add cases for the new product IDs before the existing coin product handling
 4. Reference the logic in `SpecialActionsHandler.lua` (lines 118-138)
 
-#### Step 4: Testing Without Dev Products
-For testing purposes, you can temporarily enable the actions without purchase:
+#### Step 4: Security Note
+**⚠️ IMPORTANT:** The special action buttons are now secured and will only work when:
+1. Valid product IDs are configured (not 0)
+2. Purchase is completed through MarketplaceService
+3. ProcessReceipt validates the purchase
 
-In `SpecialActionsHandler.lua`, uncomment lines 106 or 114:
-```lua
--- For testing (line 106):
-killAllPlayers(player)
-
--- For testing (line 114):
-skipToFinish(player)
-```
-
-**⚠️ WARNING:** Remove test code before going live!
+If product IDs are not configured, players will see a "Not Available" message instead of being able to exploit the system.
 
 #### Step 5: Create End Part
 If you don't have an "End" or "GamepassEnd" part in your maps:

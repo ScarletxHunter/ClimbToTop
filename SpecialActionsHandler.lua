@@ -8,6 +8,7 @@ local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
 
 -- Product IDs - these should match the client-side values
+-- Example: local KILL_ALL_PRODUCT_ID = 123456789
 local KILL_ALL_PRODUCT_ID = 0  -- TODO: Set up dev product and add ID
 local SKIP_PRODUCT_ID = 0       -- TODO: Set up dev product and add ID
 
@@ -100,22 +101,19 @@ local function skipToFinish(player)
 end
 
 -- ============================================
--- EVENT HANDLERS
+-- EVENT HANDLERS (Server-side validation)
 -- ============================================
+-- These should ONLY be called after purchase validation
+-- DO NOT enable direct server event calling in production
+
 killAllEvent.OnServerEvent:Connect(function(player)
-	-- For testing without dev products, you can uncomment this:
-	-- killAllPlayers(player)
-	
-	-- In production, this should only be called after purchase confirmation
-	warn(string.format("⚠️ %s attempted Kill All - implement purchase check!", player.Name))
+	-- Block direct calls - only ProcessReceipt should grant actions
+	warn(string.format("⚠️ SECURITY: %s attempted Kill All without purchase!", player.Name))
 end)
 
 skipEvent.OnServerEvent:Connect(function(player)
-	-- For testing without dev products, you can uncomment this:
-	-- skipToFinish(player)
-	
-	-- In production, this should only be called after purchase confirmation
-	warn(string.format("⚠️ %s attempted Skip - implement purchase check!", player.Name))
+	-- Block direct calls - only ProcessReceipt should grant actions
+	warn(string.format("⚠️ SECURITY: %s attempted Skip without purchase!", player.Name))
 end)
 
 -- ============================================
