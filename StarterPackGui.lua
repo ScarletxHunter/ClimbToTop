@@ -13,6 +13,10 @@ local playerGui = plr:WaitForChild("PlayerGui")
 
 -- Configuration
 local AUTO_PROMPT_DELAY = 2.5 -- Seconds to wait before auto-opening for new players
+local STARTERPACK_GAMEPASS_ID = 1708836892 -- Starter Pack gamepass ID
+
+-- Track gamepass ownership
+local ownsGamepass = false
 
 -- Create the main ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -169,7 +173,7 @@ claimBtn.Name = "ClaimBtn"
 claimBtn.Size = UDim2.new(0.8, 0, 0, 50)
 claimBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
 claimBtn.BorderSizePixel = 0
-claimBtn.Text = "✓ CLAIM STARTER PACK"
+claimBtn.Text = "LOADING..."
 claimBtn.Font = Enum.Font.GothamBlack
 claimBtn.TextSize = 18
 claimBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -224,6 +228,32 @@ local function toggleContainer(force)
 	end
 end
 
+-- Function to check gamepass ownership and update UI
+local function checkGamepassOwnership()
+	local success, owns = pcall(function()
+		return MPS:UserOwnsGamePassAsync(plr.UserId, STARTERPACK_GAMEPASS_ID)
+	end)
+	
+	ownsGamepass = success and owns or false
+	
+	-- Update button text and color based on ownership
+	if ownsGamepass then
+		claimBtn.Text = "✓ CLAIM STARTER PACK"
+		claimBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
+	else
+		claimBtn.Text = "🛒 BUY STARTER PACK"
+		claimBtn.BackgroundColor3 = Color3.fromRGB(255, 180, 0)
+	end
+	
+	return ownsGamepass
+end
+
+-- Check ownership on load
+task.spawn(function()
+	task.wait(0.5) -- Brief delay to allow services to initialize
+	checkGamepassOwnership()
+end)
+
 toggleBtn.MouseButton1Click:Connect(function()
 	toggleContainer()
 end)
@@ -232,8 +262,23 @@ closeBtn.MouseButton1Click:Connect(function()
 	toggleContainer(false)
 end)
 
--- Claim button (connects to server-side rewards)
+-- Claim button (handles both purchase prompt and claiming)
 claimBtn.MouseButton1Click:Connect(function()
+	-- If player doesn't own gamepass, prompt purchase
+	if not ownsGamepass then
+		local success = pcall(function()
+			MPS:PromptGamePassPurchase(plr, STARTERPACK_GAMEPASS_ID)
+		end)
+		
+		if not success then
+			if _G.Notify then
+				_G.Notify("⚠️ Error", "Could not open purchase prompt", 3, "error")
+			end
+		end
+		return
+	end
+	
+	-- Player owns gamepass, proceed with claiming
 	local claimEvent = RS:FindFirstChild("RemoteEvents") and RS.RemoteEvents:FindFirstChild("ClaimStarterPack")
 	
 	if claimEvent then
@@ -250,6 +295,35 @@ claimBtn.MouseButton1Click:Connect(function()
 	toggleContainer(false)
 end)
 
+-- Handle gamepass purchase completion
+MPS.PromptGamePassPurchaseFinished:Connect(function(player, gamepassId, wasPurchased)
+	if player ~= plr or gamepassId ~= STARTERPACK_GAMEPASS_ID then
+		return
+	end
+	
+	if wasPurchased then
+		-- Update ownership status and UI
+		ownsGamepass = true
+		claimBtn.Text = "✓ CLAIM STARTER PACK"
+		claimBtn.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
+		
+		-- Show success notification
+		if _G.Notify then
+			_G.Notify("🎁 Purchase Complete!", "Click CLAIM to receive your rewards!", 4, "success")
+		end
+		
+		-- Auto-open the panel if it's closed
+		if not container.Visible then
+			toggleContainer(true)
+		end
+	else
+		-- Purchase was cancelled or failed
+		if _G.Notify then
+			_G.Notify("Purchase Cancelled", "You can buy the starter pack anytime!", 3, "warning")
+		end
+	end
+end)
+
 -- ============================================
 -- AUTO-PROMPT ON JOIN (NEW PLAYERS ONLY)
 -- ============================================
@@ -264,19 +338,25 @@ task.spawn(function()
 	-- Wait before prompting to allow other UI elements to load
 	task.wait(AUTO_PROMPT_DELAY)
 	
-	-- Check if player has already claimed
-	local hasClaimed = false
-	local success, result = pcall(function()
-		return checkFunction:InvokeServer()
-	end)
+	-- Check gamepass ownership first
+	checkGamepassOwnership()
 	
-	if success then
-		hasClaimed = result
-	end
-	
-	-- Auto-open if not claimed yet
-	if not hasClaimed then
-		toggleContainer(true)
+	-- Only auto-open if player has gamepass but hasn't claimed yet
+	if ownsGamepass then
+		-- Check if player has already claimed
+		local hasClaimed = false
+		local success, result = pcall(function()
+			return checkFunction:InvokeServer()
+		end)
+		
+		if success then
+			hasClaimed = result
+		end
+		
+		-- Auto-open if not claimed yet
+		if not hasClaimed then
+			toggleContainer(true)
+		end
 	end
 end)
 
