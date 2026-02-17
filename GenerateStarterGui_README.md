@@ -1,7 +1,19 @@
-# Starter GUI Generator Script
+# GUI Generator Scripts
 
 ## Overview
-`GenerateStarterGui.lua` is a one-time use script that generates a complete Main Menu GUI structure in StarterGui. This allows you to quickly create a professional-looking menu interface that you can then customize manually in Roblox Studio.
+This repository includes two GUI generator scripts that create complete, fully-functional GUI structures in StarterGui:
+
+1. **`GenerateStarterGui.lua`** - Main Menu GUI with game controls
+2. **`GenerateStarterPackGui.lua`** - Starter Pack/Welcome GUI matching the shop theme
+
+These are one-time use scripts that generate professional-looking interfaces with all functionality built-in. Run once, then edit manually in Roblox Studio.
+
+---
+
+## GenerateStarterGui.lua - Main Menu GUI
+
+### Overview
+Creates a complete Main Menu GUI structure with all buttons, animations, and functionality built-in.
 
 ## Purpose
 Instead of manually creating dozens of UI elements and setting hundreds of properties one by one, this script does it all programmatically in seconds. Once generated, the GUI appears in StarterGui where you can edit it like any other GUI.
@@ -275,7 +287,164 @@ If you encounter issues:
 
 ---
 
+## GenerateStarterPackGui.lua - Starter Pack GUI
+
+### Overview
+Creates a Starter Pack/Welcome GUI that matches the design of the existing gamepass/shop GUIs. Features a clean, modern interface with reward items and claim functionality.
+
+### Features
+
+#### Generated GUI Structure
+- **ScreenGui** (StarterPackGui)
+- **Container Frame** - Centered modal with shop-style theme
+- **Title Bar** - "🎁 STARTER PACK" with close button
+- **Description** - Welcome message
+- **Items Frame** - List of reward items (coins, trails, etc.)
+- **Claim Button** - Large green button to claim rewards
+- **Toggle Button** - Bottom-left corner button (🎁 icon)
+
+#### Design Highlights
+- **Matches Shop Theme** - Same colors, corners, and styling as gamepass/shop GUIs
+- **Animated Transitions** - Smooth open/close with back easing
+- **Hover Effects** - All buttons have hover animations
+- **Auto-Display** - Automatically shows for new players (< 100 coins)
+- **Server Integration** - Ready for RemoteEvent connection
+
+#### Color Scheme
+Following the repository's shop theme:
+- **Container Background**: `RGB(28, 25, 45)` - Dark purple
+- **Container Stroke**: `RGB(100, 60, 200)` - Purple accent
+- **Title Bar**: `RGB(40, 32, 65)` - Darker purple
+- **Items Background**: `RGB(35, 30, 55)` - Mid purple
+- **Item Cards**: `RGB(45, 38, 70)` - Lighter purple
+- **Claim Button**: `RGB(100, 200, 100)` - Green
+- **Close Button**: `RGB(200, 50, 50)` - Red
+- **Toggle Button**: `RGB(100, 60, 200)` - Purple
+
+### How to Use
+
+Same methods as GenerateStarterGui.lua:
+
+#### Method A: Command Bar (Recommended)
+1. Open the Command Bar (View → Command Bar)
+2. Copy the ENTIRE contents of `GenerateStarterPackGui.lua`
+3. Paste and press Enter
+
+#### Method B: Script Object
+1. Insert Script in ServerScriptService
+2. Paste the contents
+3. Press F5 to run, then F5 to stop
+
+### Customization
+
+#### Change Reward Items
+Edit the items in the ItemsFrame:
+1. Find Item1, Item2, Item3 in the Explorer
+2. Edit the Text property to change rewards
+3. Add more items by duplicating an existing item
+
+#### Server-Side Integration
+To make claims work, create a RemoteEvent:
+1. In ReplicatedStorage, create a folder named "RemoteEvents"
+2. Create a RemoteEvent named "ClaimStarterPack"
+3. Write a server script to handle the event:
+
+```lua
+-- ServerScriptService script
+local RS = game:GetService("ReplicatedStorage")
+local claimEvent = RS:WaitForChild("RemoteEvents"):WaitForChild("ClaimStarterPack")
+
+claimEvent.OnServerEvent:Connect(function(player)
+    -- Check if player has already claimed
+    -- Grant 500 coins, trails, etc.
+    -- Mark as claimed in PlayerDataManager
+    print(player.Name .. " claimed starter pack!")
+end)
+```
+
+#### Keyboard Shortcut
+- Press **P** to toggle the Starter Pack GUI
+- Or call `_G.OpenStarterPack()` from other scripts
+
+### GUI Hierarchy
+
+```
+StarterGui
+└── StarterPackGui (ScreenGui)
+    ├── Container (Frame)
+    │   ├── UICorner
+    │   ├── UIStroke
+    │   ├── TitleBar (Frame)
+    │   │   ├── UICorner
+    │   │   ├── TitleLabel (TextLabel)
+    │   │   └── CloseBtn (TextButton)
+    │   │       └── UICorner
+    │   └── Body (Frame)
+    │       ├── UIListLayout
+    │       ├── Description (TextLabel)
+    │       ├── ItemsFrame (Frame)
+    │       │   ├── UICorner
+    │       │   ├── UIListLayout
+    │       │   ├── UIPadding
+    │       │   ├── Item1 (TextLabel)
+    │       │   │   ├── UICorner
+    │       │   │   └── UIPadding
+    │       │   ├── Item2 (TextLabel)
+    │       │   │   ├── UICorner
+    │       │   │   └── UIPadding
+    │       │   └── Item3 (TextLabel)
+    │       │       ├── UICorner
+    │       │       └── UIPadding
+    │       └── ClaimBtn (TextButton)
+    │           └── UICorner
+    ├── StarterPackToggle (TextButton)
+    │   ├── UICorner
+    │   └── UIStroke
+    └── StarterPackScript (LocalScript)
+```
+
+---
+
+## Comparison: Main Menu vs Starter Pack
+
+| Feature | GenerateStarterGui.lua | GenerateStarterPackGui.lua |
+|---------|------------------------|---------------------------|
+| **Style** | Custom main menu | Shop/gamepass theme |
+| **Purpose** | Game navigation | Welcome/rewards |
+| **Buttons** | Play, Settings, Shop, Leaderboard | Claim, Toggle |
+| **Position** | Center overlay | Center modal |
+| **Toggle** | ESC key | P key |
+| **Auto-show** | No | Yes (new players) |
+| **Size** | 40% x 60% | 50% x 55% |
+| **Corner Button** | No | Yes (bottom-left) |
+
+---
+
+## Tips for Both GUIs
+
+### Integration
+Both GUIs can coexist in your game:
+- Main Menu for navigation
+- Starter Pack for new player onboarding
+
+### Global Functions
+- `_G.ToggleMainMenu()` - Toggle main menu
+- `_G.OpenStarterPack()` - Open starter pack
+
+### Notifications
+Both GUIs use `_G.Notify()` if available. Ensure your notification system is loaded first.
+
+### Mobile Support
+Both GUIs are mobile-friendly with:
+- Relative sizing (UDim2 scale values)
+- Touch-enabled buttons
+- UIAspectRatioConstraints (Main Menu)
+- Responsive layouts
+
+---
+
 **Created**: 2026-02-17  
-**Version**: 1.0  
-**Purpose**: One-time GUI generation for manual editing  
+**Version**: 2.0  
+**Scripts**: GenerateStarterGui.lua, GenerateStarterPackGui.lua  
+**Purpose**: One-time GUI generation with full functionality  
 **License**: Use freely within this project
