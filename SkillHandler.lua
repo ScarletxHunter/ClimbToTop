@@ -452,7 +452,7 @@ local function execTeleport(plr, td)
 	if not c then return false end
 	local h = c:FindFirstChild("HumanoidRootPart")
 	if not h then return false end
-	local dist = math.clamp(td.SkillDistance or 16, 8, 24)
+	local dist = math.clamp(td.SkillDistance or 32, 16, 48)
 	local look3D = h.CFrame.LookVector
 	local flatLook = Vector3.new(look3D.X, 0, look3D.Z)
 	if flatLook.Magnitude < 0.1 then flatLook = Vector3.new(0, 0, -1) end
@@ -762,7 +762,7 @@ local function execBomber(plr, td)
 	local tl = Instance.new("TextLabel")
 	tl.Size = UDim2.new(1, 0, 1, 0)
 	tl.BackgroundTransparency = 1
-	tl.Text = "?? 3"
+	tl.Text = "💣 3"
 	tl.TextColor3 = Color3.fromRGB(255, 50, 50)
 	tl.TextStrokeTransparency = 0
 	tl.Font = Enum.Font.GothamBold
@@ -771,7 +771,7 @@ local function execBomber(plr, td)
 	task.spawn(function()
 		for countdown = fuseTime, 1, -1 do
 			if not bomb or not bomb.Parent then return end
-			tl.Text = "?? " .. countdown
+			tl.Text = "💣 " .. countdown
 			local blinkCount = countdown == 1 and 5 or 2
 			for blink = 1, blinkCount do
 				if not bomb or not bomb.Parent then return end
