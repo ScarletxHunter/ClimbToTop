@@ -40,23 +40,6 @@ function PlayerDataManager.LoadData(player)
 		end
 		playerData[player.UserId] = data
 		print("? Loaded data for:", player.Name)
-
-	-- Create leaderstats
-	local ls = Instance.new("Folder")
-	ls.Name = "leaderstats"
-	ls.Parent = player
-	
-	local winsVal = Instance.new("IntValue")
-	winsVal.Name = "Wins"
-	winsVal.Value = playerData[player.UserId].Wins or 0
-	winsVal.Parent = ls
-	
-	local coinsVal = Instance.new("IntValue")
-	coinsVal.Name = "Coins"
-	coinsVal.Value = playerData[player.UserId].Coins or 0
-	coinsVal.Parent = ls
-	
-	print("?? Leaderstats created | Wins:", winsVal.Value, "| Coins:", coinsVal.Value)
 	else
 		playerData[player.UserId] = {}
 		for key, val in pairs(DEFAULT_DATA) do
@@ -68,6 +51,23 @@ function PlayerDataManager.LoadData(player)
 		end
 		print("?? Created new data for:", player.Name)
 	end
+
+	-- Create leaderstats (for BOTH new and returning players)
+	local ls = Instance.new("Folder")
+	ls.Name = "leaderstats"
+	ls.Parent = player
+
+	local winsVal = Instance.new("IntValue")
+	winsVal.Name = "Wins"
+	winsVal.Value = playerData[player.UserId].Wins or 0
+	winsVal.Parent = ls
+
+	local coinsVal = Instance.new("IntValue")
+	coinsVal.Name = "Coins"
+	coinsVal.Value = playerData[player.UserId].Coins or 0
+	coinsVal.Parent = ls
+
+	print("?? Leaderstats created | Wins:", winsVal.Value, "| Coins:", coinsVal.Value)
 
 	return playerData[player.UserId]
 end

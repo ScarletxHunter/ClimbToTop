@@ -15,13 +15,7 @@ local PlayerDataManager = require(script.Parent:WaitForChild("PlayerDataManager"
 print("? Trail Shop Handler v7 loading...")
 
 local function dbg(hId, loc, msg, data)
-	-- #region agent log
-	pcall(function()
-		HttpService:PostAsync("http://127.0.0.1:7243/ingest/f4b63b01-cff3-4a42-b344-cb9c3aec0ae1",
-			HttpService:JSONEncode({hypothesisId=hId,location=loc,message=msg,data=data or {},timestamp=DateTime.now().UnixTimestampMillis}),
-			Enum.HttpContentType.ApplicationJson)
-	end)
-	-- #endregion
+	-- Debug logging (print only, no HTTP)
 end
 
 local TRAILMASTER_GAMEPASS_ID = 1711477336
@@ -623,13 +617,14 @@ local function resetRoundPurchases()
 	roundPurchases={} print("Round purchases reset") end
 _G.ResetCoinTrails=resetRoundPurchases
 local function handlePurchase(plr,trailId)
+	print("[DBG-TRAIL] handlePurchase called | player:", plr.Name, "| trailId:", tostring(trailId))
 	-- #region agent log
 	dbg("H6", "TrailShop:handlePurchase", "Purchase attempt", {player=plr.Name, trailId=trailId})
 	-- #endregion
-	local trail=TRAIL_MAP[trailId] if not trail then return end
+	local trail=TRAIL_MAP[trailId] if not trail then print("[DBG-TRAIL] handlePurchase REJECTED: trail not found") return end
 	local GV=ReplicatedStorage:FindFirstChild("GameValues")
 	if GV then local GS=GV:FindFirstChild("GameState")
-		if GS and GS.Value=="Playing" then return end end
+		if GS and GS.Value=="Playing" then print("[DBG-TRAIL] handlePurchase REJECTED: round is Playing") return end end
 	if trail.RequiresGamepass and not hasTrailMaster(plr) then
 		-- #region agent log
 		dbg("H6", "TrailShop:handlePurchase", "BLOCKED: No gamepass", {player=plr.Name, trailId=trailId})
@@ -652,8 +647,10 @@ local function handlePurchase(plr,trailId)
 	applyFullTrail(plr,trail) TrailUpdate:FireClient(plr,"Purchased",trailId)
 end
 local function handleEquip(plr,trailId)
-	local trail=TRAIL_MAP[trailId] if not trail then return end
+	print("[DBG-TRAIL] handleEquip called | player:", plr.Name, "| trailId:", tostring(trailId))
+	local trail=TRAIL_MAP[trailId] if not trail then print("[DBG-TRAIL] handleEquip REJECTED: trail not found") return end
 	if ALWAYS_FREE[trailId] then
+		print("[DBG-TRAIL] handleEquip: free trail, equipping")
 		PlayerDataManager.SetEquippedTrail(plr,trailId) applyFullTrail(plr,trail) TrailUpdate:FireClient(plr,"Equipped",trailId) return end
 	if trail.RequiresGamepass then
 		if hasTrailMaster(plr) then PlayerDataManager.SetEquippedTrail(plr,trailId) applyFullTrail(plr,trail) TrailUpdate:FireClient(plr,"Equipped",trailId)
@@ -666,10 +663,12 @@ local function handleUnequip(plr)
 	PlayerDataManager.SetEquippedTrail(plr,nil) removeFullTrail(plr) TrailUpdate:FireClient(plr,"Unequipped","")
 end
 TrailEquip.OnServerEvent:Connect(function(plr,action,trailId)
-	if typeof(action)~="string" then return end
+	print("[DBG-TRAIL] TrailEquip event | player:", plr.Name, "| action:", tostring(action), "| trailId:", tostring(trailId))
+	if typeof(action)~="string" then print("[DBG-TRAIL] REJECTED: action not a string") return end
 	if action=="Purchase" then handlePurchase(plr,trailId)
 	elseif action=="Equip" then handleEquip(plr,trailId)
-	elseif action=="Unequip" then handleUnequip(plr) end
+	elseif action=="Unequip" then handleUnequip(plr)
+	else print("[DBG-TRAIL] REJECTED: unknown action:", action) end
 end)
 GetTrailShopData.OnServerInvoke=function(plr)
 	-- #region agent log

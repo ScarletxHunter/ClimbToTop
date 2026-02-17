@@ -5,13 +5,7 @@ local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
 
 local function dbg(hId, loc, msg, data)
-	-- #region agent log
-	pcall(function()
-		HttpService:PostAsync("http://127.0.0.1:7243/ingest/f4b63b01-cff3-4a42-b344-cb9c3aec0ae1",
-			HttpService:JSONEncode({hypothesisId=hId,location=loc,message=msg,data=data or {},timestamp=DateTime.now().UnixTimestampMillis}),
-			Enum.HttpContentType.ApplicationJson)
-	end)
-	-- #endregion
+	-- Debug logging (print only, no HTTP)
 end
 
 local DailyStore = DataStoreService:GetDataStore("DailyRewards_V1")

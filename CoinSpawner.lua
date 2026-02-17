@@ -30,22 +30,7 @@ end
 local pointState = {} -- [BasePart] = {coin = BasePart|nil, nextSpawnAt = number}
 
 local function dbg(hId, loc, msg, data)
-	-- #region agent log
-	pcall(function()
-		HttpService:PostAsync(
-			"http://127.0.0.1:7243/ingest/f4b63b01-cff3-4a42-b344-cb9c3aec0ae1",
-			HttpService:JSONEncode({
-				runId = "coin_spawner_debug",
-				hypothesisId = hId,
-				location = loc,
-				message = msg,
-				data = data or {},
-				timestamp = DateTime.now().UnixTimestampMillis,
-			}),
-			Enum.HttpContentType.ApplicationJson
-		)
-	end)
-	-- #endregion
+	-- Debug logging (print only, no HTTP)
 end
 
 local function clearActiveCoins()

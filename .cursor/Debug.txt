@@ -1,0 +1,158 @@
+  15:07:37.307  🔊 Sound Manager initialized  -  Server - SoundManager:83
+  15:07:37.307  ? CollisionHandler FRESH - snap recovery  -  Server - CollisionHandler:167
+  15:07:37.307     Ragdoll: 2s then SNAP to ground  -  Server - CollisionHandler:168
+  15:07:37.307     Cooldown: 3s  -  Server - CollisionHandler:169
+  15:07:37.307  ?? Skill Handler v2 loading...  -  Server - SkillHandler:6
+  15:07:37.308  ? Skill Handler v2 loaded!  -  Server - SkillHandler:1656
+  15:07:37.308     Skills: FreezeTime, Dash, Phase, Shockwave, SpeedBurst, Momentum, Teleport, TimeRewind, Bomber, TitanShield, RainbowStar, SakuraBloom, FrostFreeze, VoidPortal, LightningShock, PhantomClone, AcidPool, GravityField  -  Server - SkillHandler:1657
+  15:07:37.308  🪞 Mirror transparency → 0 (State: Intermission)  -  Server - MirrorHandler:40
+  15:07:37.308  ✅ Mirror Handler initialized  -  Server - MirrorHandler:48
+  15:07:37.309  ✅ Coin Remotes initialized (with purchase system)  -  Server - CoinRemotes:116
+  15:07:37.311  🎮 GAME MANAGER STARTED  -  Server - GameManager:463
+  15:07:37.312  ⏳ Waiting for players... (0/1)  -  Server - GameManager:452
+  15:07:37.312  ?? Daily Reward Handler loaded!  -  Server - DailyRewardHandler:247
+  15:07:37.312  ✅ Marker system active  -  Server - Marker:33
+  15:07:37.312  🔧 Admin Handler loaded!  -  Server - AdminHandler:244
+  15:07:37.312     Admins: 658326075  -  Server - AdminHandler:245
+  15:07:37.313  ? Trail Shop Handler v7 loading...  -  Server - TrailShopHandler:15
+  15:07:37.314  Trail Shop Handler v7 loaded!  -  Server - TrailShopHandler:732
+  15:07:37.314    Total: 48 | Free: 4 | Coin: 32 | Premium: 12  -  Server - TrailShopHandler:735
+  15:07:37.315  ? Gamepass Handler initialized  -  Server - GamepassHandler:322
+  15:07:37.316  Knockback tool gamepass active (ID: 1708531013)  -  Server - GamepassHandler:390
+  15:07:37.526  ?? Gamepasses for ScarletxHunterx:  ▶ {...}  -  Server - GamepassHandler:78
+  15:07:37.640  🔊 Created 29 sound objects  -  Client - ClientSoundHandler:89
+  15:07:37.640     ✅ PlaySoundEvent connected  -  Client - ClientSoundHandler:127
+  15:07:37.640     ✅ Ragdoll sounds connected  -  Client - ClientSoundHandler:151
+  15:07:37.640     ✅ Auto button click sounds active  -  Client - ClientSoundHandler:195
+  15:07:37.640     ✅ Round start/end sounds connected  -  Client - ClientSoundHandler:248
+  15:07:37.640  🔊 Client Sound Handler loaded  -  Client - ClientSoundHandler:251
+  15:07:37.641     📊 Total sounds: 29  -  Client - ClientSoundHandler:252
+  15:07:37.720  🎫 GamePass Handler loading...  -  Studio
+  15:07:37.720  ✅ GamePass Handler ready!  -  Studio
+  15:07:37.720     Registered passes:  -  Studio
+  15:07:37.720     - TrailMaster - ID: 1704388512  -  Studio
+  15:07:37.720     - VIP - ID: 1704140664  -  Studio
+  15:07:37.720     - Athlete - ID: 1703657605  -  Studio
+  15:07:37.720     - HeadStart - ID: 1704300498  -  Studio
+  15:07:37.720     - StarterPack - ID: 1704084817  -  Studio
+  15:07:37.721     - KnockbackResist - ID: 1703795339  -  Studio
+  15:07:39.096  ✅ Loaded data for: ScarletxHunterx  -  Server - PlayerDataManager:42
+  15:07:39.096  📊 Leaderstats created | Wins: 1587 | Coins: 358863305  -  Server - PlayerDataManager:59
+  15:07:39.107  🎫 GamePass Handler loading...  -  Client
+  15:07:39.107  ✅ GamePass Handler ready!  -  Client
+  15:07:39.107     Registered passes:  -  Client
+  15:07:39.107     - TrailMaster - ID: 1704388512  -  Client
+  15:07:39.107     - VIP - ID: 1704140664  -  Client
+  15:07:39.107     - Athlete - ID: 1703657605  -  Client
+  15:07:39.108     - HeadStart - ID: 1704300498  -  Client
+  15:07:39.108     - StarterPack - ID: 1704084817  -  Client
+  15:07:39.108     - KnockbackResist - ID: 1703795339  -  Client
+  15:07:39.689  ☕ INTERMISSION PHASE  -  Server - GameManager:269
+  15:07:39.689  🗑️ Unloading current map...  -  Server - MapLoader:13
+  15:07:39.689  ⏹️ Stopping spawner  -  Server - ObjectSpawner:186
+  15:07:39.691  Round purchases reset  -  Server - TrailShopHandler:621
+  15:07:39.692  🏠 Teleported all players to lobby  -  Server - GameManager:105
+  15:07:39.692  🎵 Playing: MenuMusic  -  Server - SoundManager:94
+  15:07:39.944  ✅ Timer GUI loaded  -  Client - TimerGuiScript:85
+  15:07:39.944  ✅ Win Display GUI loaded  -  Client - WinDisplayScript:83
+  15:07:39.945  ✅ Win GUI loaded  -  Client - WinGuiScript:32
+  15:07:39.945  ✅ Vote HUD GUI loaded  -  Client - VoteHudScript:88
+  15:07:39.945  ✅ Progress GUI (all players with faces) loaded  -  Client - ProgressGuiScript:249
+  15:07:39.945  ✅ Coin display active  -  Client - CoinsGuiScript:45
+  15:07:39.945  ? Skill Client loaded! Press [E] to use skill  -  Client - SkillClientScript:361
+  15:07:39.945     Skills activate when you equip a trail with a skill  -  Client - SkillClientScript:362
+  15:07:39.945     Cooldown timer displays on skill icon  -  Client - SkillClientScript:363
+  15:07:39.945  ✅ Blind Effect handler loaded  -  Client - BlindHandlerScript:70
+  15:07:39.946  Stats GUI loaded - auto shows during rounds  -  Client - StatsScript:157
+  15:07:39.946  Notification + Confirm system ready  -  Client - LocalScript:98
+  15:07:39.946  ? Notification GLOBALS READY: _G.Notify, _G.Confirm, _G.ShowNotification  -  Client - LocalScript:114
+  15:07:39.946  Leaderboard ready!  -  Client - LeaderboardScript:135
+  15:07:39.946  🏆 Leaderboard ready! Press L or click 🏆  -  Client - LeaderboardScript:197
+  15:07:39.947  ? TrailShop: _G.Notify connected  -  Client - TrailShopScript:16
+  15:07:39.947  ✅ ButtonBar ready!  -  Client - ButtonBarScript:130
+  15:07:39.947     🛒 Shop (G) | ✨ Trails (B) | 🏆 Leaderboard (L) | ⚙ Admin (F2)  -  Client - ButtonBarScript:131
+  15:07:39.948  ? Settings ready!  -  Client - SettingsScript:245
+  15:07:39.948     ?? Sounds = ALL audio (music + SFX + buttons)  -  Client - SettingsScript:246
+  15:07:39.948     ?? Screen Shake  -  Client - SettingsScript:247
+  15:07:39.948     ? Particles  -  Client - SettingsScript:248
+  15:07:39.948  ?? Daily Rewards client ready  -  Client - DailyRewardScript:159
+  15:07:39.949  ? BWEffect listener connected  -  Client - SkillEffectsScript:151
+  15:07:39.949  ? NotifyClient listener connected (freeze notifications)  -  Client - SkillEffectsScript:181
+  15:07:39.949  ? Skill Effects Handler loaded!  -  Client - SkillEffectsScript:389
+  15:07:39.949     ? Freeze: B&W + banner + timer bar  -  Client - SkillEffectsScript:390
+  15:07:39.949     ? No pink tint (TintColor = white)  -  Client - SkillEffectsScript:391
+  15:07:40.099     ✅ Coin collect sound connected  -  Client - ClientSoundHandler:224
+  15:07:40.150  🔧 Admin Panel ready! Press F2 or click ⚙  -  Client - AdminClient:100
+  15:07:40.472  🎬 TRANSITION: Fading from black...  -  Client - TransitionScript:180
+  15:07:40.573  ? Trail Shop loaded (v7 client)  -  Client - TrailShopScript:223
+  15:07:41.008  Requiring asset 6738245247.
+Callstack:
+cloud_2971874773.Atmos.PluginUpdates, line 36
+cloud_2971874773.Atmos.PluginUpdates, line 35 - getLatestVersion
+cloud_2971874773.Atmos.Script, line 322
+  -  Server
+  15:07:41.491  🛒 New Shop ready! Press G or click 🛒 to open  -  Client - NewShopScript:213
+  15:07:41.809  🎬 TRANSITION: Fully clear  -  Client - TransitionScript:209
+  15:07:41.809  ✅ Transition GUI loaded (DisplayOrder: 999, ZIndex: 100)  -  Client - TransitionScript:234
+  15:07:42.957  ? Settings loaded from save: Vol=0.8 Shake=true Particles=true  -  Client - SettingsScript:197
+  15:07:44.508  ✅ Loading screen complete  -  Client - LoadingScreenScript:161
+  15:07:46.040   ▶ DataStore request was added to queue. If request queue fills, further requests will be dropped. Try sending fewer requests.Key = Player_658326075 (x14)  -  Studio
+  15:07:46.274  💾 Saved data for: ScarletxHunterx  -  Server - PlayerDataManager:83
+  15:07:46.424   ▶ DataStore request was added to queue. If request queue fills, further requests will be dropped. Try sending fewer requests.Key = Player_658326075 (x10)  -  Studio
+  15:07:46.640  💾 Saved data for: ScarletxHunterx  -  Server - PlayerDataManager:83
+  15:07:46.807   ▶ DataStore request was added to queue. If request queue fills, further requests will be dropped. Try sending fewer requests.Key = Player_658326075 (x7)  -  Studio
+  15:07:46.992  DataStoreService: SetAsyncThrottle: SetAsync request dropped. Request was throttled, but throttled request queue was full. API: SetAsync, Data Store: PlayerStats_V4  -  Studio
+  15:07:46.998  ❌ Failed to save data for: ScarletxHunterx 302: SetAsync request dropped. Request was throttled, but throttled request queue was full.  -  Server - PlayerDataManager:85
+  15:07:47.024  💾 Saved data for: ScarletxHunterx  -  Server - PlayerDataManager:83
+  15:07:47.491  DataStore request was added to queue. If request queue fills, further requests will be dropped. Try sending fewer requests.Key = Player_658326075  -  Studio
+  15:07:47.524  DataStoreService: SetAsyncThrottle: SetAsync request dropped. Request was throttled, but throttled request queue was full. API: SetAsync, Data Store: PlayerStats_V4  -  Studio
+  15:07:47.524  ❌ Failed to save data for: ScarletxHunterx 302: SetAsync request dropped. Request was throttled, but throttled request queue was full.  -  Server - PlayerDataManager:85
+  15:07:47.541  DataStoreService: SetAsyncThrottle: SetAsync request dropped. Request was throttled, but throttled request queue was full. API: SetAsync, Data Store: PlayerStats_V4  -  Studio
+  15:07:47.541  ❌ Failed to save data for: ScarletxHunterx 302: SetAsync request dropped. Request was throttled, but throttled request queue was full.  -  Server - PlayerDataManager:85
+  15:07:47.557  DataStoreService: SetAsyncThrottle: SetAsync request dropped. Request was throttled, but throttled request queue was full. API: SetAsync, Data Store: PlayerStats_V4  -  Studio
+  15:07:47.558  ❌ Failed to save data for: ScarletxHunterx 302: SetAsync request dropped. Request was throttled, but throttled request queue was full.  -  Server - PlayerDataManager:85
+  15:07:47.591  DataStoreService: SetAsyncThrottle: SetAsync request dropped. Request was throttled, but throttled request queue was full. API: SetAsync, Data Store: PlayerStats_V4  -  Studio
+  15:07:47.591  ❌ Failed to save data for: ScarletxHunterx 302: SetAsync request dropped. Request was throttled, but throttled request queue was full.  -  Server - PlayerDataManager:85
+  15:07:47.624   ▶ 💾 Saved data for: ScarletxHunterx (x9)  -  Server - PlayerDataManager:83
+  15:07:55.874  🗳️ VOTING PHASE  -  Server - GameManager:286
+  15:07:55.874  🗳️ Starting world-based voting...  -  Server - VotingSystem:292
+  15:07:55.874  🖼️ Map preview: Planet E4 → VoteObject1  -  Server - VotingSystem:189
+  15:07:55.874  📋 VoteObject1 → Planet E4  -  Server - VotingSystem:375
+  15:07:56.391  ✅ World voting active with 1 map(s), 1 pedestal(s)  -  Server - VotingSystem:402
+  15:07:56.391  🪞 Mirror transparency → 0 (State: Voting)  -  Server - MirrorHandler:40
+  15:07:56.739   ▶ 💾 Saved data for: ScarletxHunterx (x22)  -  Server - PlayerDataManager:83
+  15:08:27.640  🎲 Random map selected: Planet E4  -  Server - VotingSystem:447
+  15:08:27.641  🗺️ Winning map: Planet E4  -  Server - GameManager:295
+  15:08:27.641  ⚔️ ROUND PHASE - Loading map: Planet E4  -  Server - GameManager:301
+  15:08:27.657  📨 Transition received: FadeIn duration: 1.5  -  Client - TransitionScript:217
+  15:08:27.657  🎬 TRANSITION: Fading to black...  -  Client - TransitionScript:134
+  15:08:29.139  🎬 TRANSITION: Fully black  -  Client - TransitionScript:168
+  15:08:29.642  🗺️ Loading map: Planet E4  -  Server - MapLoader:33
+  15:08:29.642  🗑️ Unloading current map...  -  Server - MapLoader:13
+  15:08:29.642    📍 Spawners folder → Workspace root (5 spawners)  -  Server - MapLoader:62
+  15:08:29.648    📍 StartHere3 → Workspace root  -  Server - MapLoader:59
+  15:08:29.648    📍 StartHere2 → Workspace root  -  Server - MapLoader:59
+  15:08:29.651    📍 PropStop → Workspace root  -  Server - MapLoader:56
+  15:08:29.652    📍 StartHere1 → Workspace root  -  Server - MapLoader:59
+  15:08:29.652    📍 Start → Workspace root  -  Server - MapLoader:56
+  15:08:29.653    📍 StartHere3 → Workspace root  -  Server - MapLoader:59
+  15:08:29.653    📍 StartHere2 → Workspace root  -  Server - MapLoader:59
+  15:08:29.654    📍 StartHere4 → Workspace root  -  Server - MapLoader:59
+  15:08:29.654    📍 End → Workspace root  -  Server - MapLoader:56
+  15:08:29.656  ✅ Loaded props for Planet E4  -  Server - MapLoader:67
+  15:08:30.176  ✅ Teleported 1 players across 6 start location(s)  -  Server - GameManager:122
+  15:08:33.191  🪞 Mirror transparency → 0.5 (State: Playing)  -  Server - MirrorHandler:40
+  15:08:33.223  📨 Transition received: FadeOut duration: 1.5  -  Client - TransitionScript:217
+  15:08:33.223  🎬 TRANSITION: Fading from black...  -  Client - TransitionScript:180
+  15:08:33.723  📊 Progress: Start=Start End=End  -  Client - ProgressGuiScript:89
+  15:08:33.872  📊 Loaded face for ScarletxHunterx  -  Client - ProgressGuiScript:166
+  15:08:35.175  🎬 TRANSITION: Fully clear  -  Client - TransitionScript:209
+  15:08:35.208  🎵 Playing: Map1Music  -  Server - SoundManager:94
+  15:08:35.208  🎯 Starting spawner for: Planet E4  -  Server - ObjectSpawner:158
+  15:08:35.208  ✅ Spawner: Spawner5 | Interval: 0.8 | Count: 5  -  Server - ObjectSpawner:68
+  15:08:35.208  ✅ Spawner: Spawner4 | Interval: 2.5 | Count: 2  -  Server - ObjectSpawner:68
+  15:08:35.208  ✅ Spawner: Spawner3 | Interval: 2.5 | Count: 2  -  Server - ObjectSpawner:68
+  15:08:35.208  ✅ Spawner: Spawner2 | Interval: 1.5 | Count: 3  -  Server - ObjectSpawner:68
+  15:08:35.209  ✅ Spawner: Spawner1 | Interval: 0.8 | Count: 5  -  Server - ObjectSpawner:68
+  15:08:35.209  📦 Spawn loops ready with 12 object types across 5 spawner(s)  -  Server - ObjectSpawner:175
+  15:08:35.756   ▶ ?? ScarletxHunterx used AcidPool (x2)  -  Server - SkillHandler:1593

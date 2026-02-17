@@ -63,6 +63,9 @@ function MapLoader.LoadMap(mapName)
 			elseif clone.Name == "CoinsMan" then
 				clone.Parent = workspaceService
 				print("  ?? CoinsMan folder ? Workspace root (" .. #clone:GetChildren() .. " points)")
+			elseif clone.Name == "CoinTemplate" then
+				clone.Parent = workspaceService
+				print("  ?? CoinTemplate ? Workspace root")
 			else
 				clone.Parent = mapContainer
 			end

@@ -6,13 +6,7 @@ local HttpService = game:GetService("HttpService")
 print("?? Skill Handler v2 loading...")
 
 local function dbg(hId, loc, msg, data)
-	-- #region agent log
-	pcall(function()
-		HttpService:PostAsync("http://127.0.0.1:7243/ingest/f4b63b01-cff3-4a42-b344-cb9c3aec0ae1",
-			HttpService:JSONEncode({hypothesisId=hId,location=loc,message=msg,data=data or {},timestamp=DateTime.now().UnixTimestampMillis}),
-			Enum.HttpContentType.ApplicationJson)
-	end)
-	-- #endregion
+	-- Debug logging (print only, no HTTP)
 end
 
 local reFolder = RS:WaitForChild("RemoteEvents")
@@ -36,18 +30,11 @@ local LightningShockEffect = goc("LightningShockEffect")
 local SkillActiveStart = goc("SkillActiveStart")
 local SkillReset = goc("SkillReset")
 
--- #region agent log
+-- ClientDebugLog (HTTP removed)
 local ClientDebugLog = goc("ClientDebugLog")
 ClientDebugLog.OnServerEvent:Connect(function(plr, payload)
-	pcall(function()
-		if type(payload) == "table" then
-			payload.player = plr.Name
-			HttpService:PostAsync("http://127.0.0.1:7243/ingest/f4b63b01-cff3-4a42-b344-cb9c3aec0ae1",
-				HttpService:JSONEncode(payload), Enum.HttpContentType.ApplicationJson)
-		end
-	end)
+	-- no-op: HTTP debug logging disabled
 end)
--- #endregion
 
 local GameValues = RS:WaitForChild("GameValues", 15) or RS:FindFirstChild("GameValues")
 local GameState = GameValues and (GameValues:WaitForChild("GameState", 10) or GameValues:FindFirstChild("GameState")) or nil

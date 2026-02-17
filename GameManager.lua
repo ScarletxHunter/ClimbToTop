@@ -1,20 +1,5 @@
 -- ============================================
 -- GAME MANAGER - FIXED: Up to 3 winners, delayed round end
--- 
--- CRITICAL TIMER BUGFIXES (see roundPhase function):
---   #1: Timer.Value set immediately before countdown loop starts
---       Prevents GUI from showing stale 2:00 during ~11 seconds of round setup
---   #2: roundActive checked at start of each timer iteration with proper sync
---       Ensures Timer.Value stays accurate when round ends early
---   #3: Timer.Value set BEFORE task.wait(1) in loop
---       Guarantees GUI always displays current countdown value
---   #4: Timer.Value explicitly set to 0 when round completes naturally
---       Prevents timer from getting stuck at 1 second
---   
--- These fixes eliminate:
---   - Timer stuck at 2:00 during round setup
---   - Timer stuck at non-zero value after round ends
---   - GUI/backend desync when admin skips or winners end round early
 -- ============================================
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -44,22 +29,7 @@ local SoundManager = require(script.Parent:WaitForChild("SoundManager"))
 local PlayerDataManager = require(script.Parent:WaitForChild("PlayerDataManager"))
 
 local function dbgCoin(hId, loc, msg, data)
-	-- #region agent log
-	pcall(function()
-		HttpService:PostAsync(
-			"http://127.0.0.1:7243/ingest/f4b63b01-cff3-4a42-b344-cb9c3aec0ae1",
-			HttpService:JSONEncode({
-				runId = "coin_spawner_debug",
-				hypothesisId = hId,
-				location = loc,
-				message = msg,
-				data = data or {},
-				timestamp = DateTime.now().UnixTimestampMillis,
-			}),
-			Enum.HttpContentType.ApplicationJson
-		)
-	end)
-	-- #endregion
+	-- Debug logging (print only, no HTTP)
 end
 
 local RemoteEventsFolder = ReplicatedStorage:WaitForChild("RemoteEvents")
@@ -89,38 +59,32 @@ local roundStartTime = 0
 local winConnection = nil
 
 -- Admin hooks for round control
--- BUGFIX: These hooks set flags that are checked inside the timer loop to ensure Timer.Value stays synced
 _G.AdminEndRound = function()
 	roundActive = false
 	_G.AdminForceEndRound = true
-	print("⚙️ Admin: Ending round via hook (roundActive = false, will break timer loop)")
+	print("? Admin: Ending round via hook")
 end
 
--- Admin skip jumps timer to 1 second, triggering rapid round end
 _G.AdminSkipRound = function()
 	_G.AdminSetTimer = 1
-	print("⚙️ Admin: Skipping round via hook (will jump timer to 1 second)")
+	print("? Admin: Skipping round via hook")
 end
-local roundEndTriggered = false
-
 -- ============================================
 -- START LOCATIONS
 -- ============================================
 
 local function getStartLocations()
-	local starts = {}
-	for _, obj in pairs(workspace:GetDescendants()) do
-		-- Match parts named "Start" OR starting with "StartHere"
-		if obj:IsA("BasePart") and (obj.Name == "Start" or string.sub(obj.Name, 1, 9) == "StartHere") then
-			table.insert(starts, obj)
+	local locations = {}
+	for _, child in pairs(workspace:GetChildren()) do
+		if child:IsA("BasePart") and child.Name:match("^StartHere%d*$") then
+			table.insert(locations, child)
 		end
 	end
-	
-	if #starts == 0 then
-		warn("⚠️ No 'Start' parts found in workspace! Players may spawn incorrectly.")
+	if #locations == 0 then
+		local single = workspace:FindFirstChild("StartHere")
+		if single then table.insert(locations, single) end
 	end
-	
-	return starts
+	return locations
 end
 
 -- ============================================
@@ -159,26 +123,19 @@ end
 
 local function teleportPlayersToRoundStart()
 	local startLocations = getStartLocations()
-	
 	if #startLocations == 0 then
-		warn("⚠️ No start locations found! Teleporting to lobby instead.")
-		teleportPlayersToLobby()
+		warn("?? No StartHere parts found!")
 		return
 	end
-	
-	local allPlayers = {}
-	for _, plr in pairs(Players:GetPlayers()) do
+	local allPlayers = Players:GetPlayers()
+	for i, plr in ipairs(allPlayers) do
 		if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-			table.insert(allPlayers, plr)
+			local startPart = startLocations[((i - 1) % #startLocations) + 1]
+			local offset = Vector3.new(math.random(-5, 5), 3, math.random(-5, 5))
+			plr.Character.HumanoidRootPart.CFrame = startPart.CFrame * CFrame.new(offset)
 		end
 	end
-
-	for i, plr in ipairs(allPlayers) do
-		local startPart = startLocations[((i - 1) % #startLocations) + 1]
-		local offset = Vector3.new(math.random(-5, 5), 3, math.random(-5, 5))
-		plr.Character.HumanoidRootPart.CFrame = startPart.CFrame * CFrame.new(offset)
-	end
-	print("✅ Teleported", #allPlayers, "players across", #startLocations, "start location(s)")
+	print("? Teleported", #allPlayers, "players across", #startLocations, "start location(s)")
 end
 
 -- ============================================
@@ -187,6 +144,7 @@ end
 
 local function startTimer(duration, stateName)
 	GameState.Value = stateName
+	Timer.Value = duration
 	for i = duration, 0, -1 do
 		Timer.Value = i
 		task.wait(1)
@@ -202,10 +160,10 @@ end
 -- ============================================
 
 Players.PlayerAdded:Connect(function(plr)
-	-- Mark as late joiner if round is active OR voting
-	if GameState.Value == "Playing" or GameState.Value == "Voting" then
+	-- Mark as late joiner if round is active
+	if GameState.Value == "Playing" then
 		lateJoiners[plr.UserId] = true
-		print("⏸️ " .. plr.Name .. " joined during " .. GameState.Value .. ", will spawn in lobby")
+		print("?? " .. plr.Name .. " joined mid-round, will spawn in lobby")
 	end
 
 	plr.CharacterAdded:Connect(function()
@@ -216,13 +174,13 @@ Players.PlayerAdded:Connect(function(plr)
 				teleportPlayerToLobby(plr)
 				print("?? Late joiner " .. plr.Name .. " sent to lobby")
 			else
-				-- EXISTING player who reset → back to map start
+				-- EXISTING player who reset ? back to map start
 				local startLocations = getStartLocations()
 				if #startLocations > 0 and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 					local randomStart = startLocations[math.random(1, #startLocations)]
 					local offset = Vector3.new(math.random(-5, 5), 3, math.random(-5, 5))
 					plr.Character.HumanoidRootPart.CFrame = randomStart.CFrame * CFrame.new(offset)
-					print("🔄 " .. plr.Name .. " reset → back to map start")
+					print("?? " .. plr.Name .. " reset ? back to map start")
 				end
 			end
 		else
@@ -323,40 +281,38 @@ end
 -- PHASES
 -- ============================================
 
-local function intermissionPhase()
-	print("🏠 INTERMISSION PHASE")
+local function safeCoinStop()
+	local ok, err = pcall(function() CoinSpawner.StopSpawning() end)
+	if not ok then warn("[DBG-ROUND] CoinSpawner.StopSpawning error:", err) end
+end
 
-	-- Only clear lateJoiners who have left the game
-	local currentPlayers = {}
-	for _, plr in pairs(Players:GetPlayers()) do
-		currentPlayers[plr.UserId] = true
-	end
-	
-	for userId, _ in pairs(lateJoiners) do
-		if not currentPlayers[userId] then
-			lateJoiners[userId] = nil
-			print("🧹 Removed late joiner who left: UserID " .. userId)
-		end
-	end
-	
-	-- Clear winners and reset state
+local function safeObjStop()
+	local ok, err = pcall(function() ObjectSpawner.StopSpawning() end)
+	if not ok then warn("[DBG-ROUND] ObjectSpawner.StopSpawning error:", err) end
+end
+
+local function intermissionPhase()
+	print("? INTERMISSION PHASE")
+	print("[DBG-ROUND] intermissionPhase START")
+	lateJoiners = {} -- clear late joiners for new round
 	MapLoader.UnloadMap()
-	ObjectSpawner.StopSpawning()
-	CoinSpawner.StopSpawning()
+	safeObjStop()
+	safeCoinStop()
 	winners = {}
 	roundActive = false
-	roundEndTriggered = false
 
-	if _G.ResetCoinTrails then _G.ResetCoinTrails() end
+	pcall(function() if _G.ResetCoinTrails then _G.ResetCoinTrails() end end)
 
 	teleportPlayersToLobby()
 	SoundManager.PlayMusic("MenuMusic")
 
 	startTimer(CONFIG.IntermissionTime, "Intermission")
+	print("[DBG-ROUND] intermissionPhase END")
 end
 
 local function votingPhase()
 	print("??? VOTING PHASE")
+	print("[DBG-ROUND] votingPhase START")
 	VotingSystem.StartVoting()
 
 	startTimer(CONFIG.VotingTime, "Voting")
@@ -366,16 +322,14 @@ local function votingPhase()
 	local winningMap = VotingSystem.GetWinner()
 	CurrentMap.Value = winningMap
 	print("??? Winning map:", winningMap)
+	print("[DBG-ROUND] votingPhase END | map:", winningMap)
 
 	return winningMap
 end
 
 local function roundPhase(mapName)
-	print("🏁 ROUND PHASE - Loading map:", mapName)
-
-	-- Clear late joiners from previous round (players are ready for new round)
-	lateJoiners = {}
-	print("✅ Late joiners cleared before round starts")
+	print("?? ROUND PHASE - Loading map:", mapName)
+	print("[DBG-ROUND] roundPhase START | map:", mapName)
 
 	-- Fade to black
 	SoundManager.PlaySFXForAll("Transition")
@@ -384,7 +338,15 @@ local function roundPhase(mapName)
 	end
 	task.wait(2)
 
-	MapLoader.LoadMap(mapName)
+	print("[DBG-ROUND] Loading map...")
+	local mapOk, mapErr = pcall(function()
+		MapLoader.LoadMap(mapName)
+	end)
+	if not mapOk then
+		warn("[DBG-ROUND] MapLoader.LoadMap FAILED:", mapErr)
+	else
+		print("[DBG-ROUND] MapLoader.LoadMap OK")
+	end
 	task.wait(0.5)
 
 	teleportPlayersToRoundStart()
@@ -392,9 +354,11 @@ local function roundPhase(mapName)
 	task.wait(3)
 
 	GameState.Value = "Playing"
+	Timer.Value = CONFIG.RoundTime
 	roundActive = true
 	roundStartTime = tick()
 	winners = {}
+	print("[DBG-ROUND] GameState=Playing | Timer=", CONFIG.RoundTime, "| roundActive=true")
 
 	setupWinDetection()
 
@@ -409,46 +373,39 @@ local function roundPhase(mapName)
 	elseif mapName:lower():find("3") then musicName = "Map3Music" end
 	SoundManager.PlayMusic(musicName)
 
-	ObjectSpawner.StartSpawning(mapName)
-	dbgCoin("H_GM_COIN_CALL", "GameManager:roundPhase", "About to call CoinSpawner.StartSpawning", {
-		mapName = mapName,
-		gameState = GameState.Value,
-	})
+	print("[DBG-ROUND] Starting ObjectSpawner...")
+	local okObj, errObj = pcall(function()
+		ObjectSpawner.StartSpawning(mapName)
+	end)
+	if not okObj then
+		warn("[DBG-ROUND] ObjectSpawner.StartSpawning FAILED:", errObj)
+	else
+		print("[DBG-ROUND] ObjectSpawner.StartSpawning OK")
+	end
+
+	print("[DBG-ROUND] Starting CoinSpawner...")
 	local okCoin, errCoin = pcall(function()
 		CoinSpawner.StartSpawning(mapName)
 	end)
-	dbgCoin("H_GM_COIN_CALL", "GameManager:roundPhase", "CoinSpawner.StartSpawning result", {
-		ok = okCoin,
-		err = errCoin,
-	})
 	if not okCoin then
-		warn("CoinSpawner.StartSpawning failed:", errCoin)
+		warn("[DBG-ROUND] CoinSpawner.StartSpawning FAILED:", errCoin)
+	else
+		print("[DBG-ROUND] CoinSpawner.StartSpawning OK")
 	end
 
-	-- CRITICAL BUGFIX #1: Initialize timer IMMEDIATELY before countdown loop starts
-	-- This prevents timer GUI from showing stale value (2:00) during the ~11 seconds of setup above
-	-- (setup includes: fade transitions, map loading, player teleports, win detection setup, sound/music)
-	-- Setting Timer.Value = CONFIG.RoundTime here ensures the displayed timer matches the countdown
-	Timer.Value = CONFIG.RoundTime
-	
 	-- Timer countdown - also check if roundActive was set to false by win detection
+	print("[DBG-ROUND] Entering timer loop | RoundTime=", CONFIG.RoundTime)
 	for i = CONFIG.RoundTime, 0, -1 do
-		-- CRITICAL BUGFIX #2: Check roundActive at start of each iteration
-		-- This ensures proper handling when winners trigger early round end
-		if not roundActive then 
-			-- Timer was interrupted by winner or admin - ensure Timer.Value is synced to current value
-			-- Note: On first iteration (i=CONFIG.RoundTime), this assignment is redundant but kept for code clarity
-			Timer.Value = i
-			print("⏸️ Round ended early at " .. i .. " seconds remaining")
-			break 
+		if not roundActive then
+			print("[DBG-ROUND] Timer loop EXIT: roundActive=false at i=", i)
+			break
 		end
 
 		-- Admin override: force end round
 		if _G.AdminForceEndRound then
 			_G.AdminForceEndRound = nil
 			roundActive = false
-			Timer.Value = i  -- BUGFIX: Sync timer value before breaking
-			print("⚙️ Admin forced round end")
+			print("? Admin forced round end")
 			break
 		end
 
@@ -456,12 +413,15 @@ local function roundPhase(mapName)
 		if _G.AdminSetTimer then
 			i = _G.AdminSetTimer
 			_G.AdminSetTimer = nil
-			print("⚙️ Admin set timer to " .. i)
+			print("? Admin set timer to " .. i)
 		end
 
-		-- CRITICAL BUGFIX #3: Set Timer.Value BEFORE wait
-		-- This ensures the GUI always displays the correct current time
 		Timer.Value = i
+
+		-- Log every 30 seconds to track progress
+		if i % 30 == 0 then
+			print("[DBG-ROUND] Timer tick | i=", i, "| roundActive=", roundActive, "| winners=", #winners)
+		end
 
 		if i <= 3 and i > 0 then
 			SoundManager.PlaySFXForAll("Countdown")
@@ -470,28 +430,30 @@ local function roundPhase(mapName)
 		task.wait(1)
 	end
 
-	-- CRITICAL BUGFIX #4: Always ensure Timer.Value reaches 0 when round completes normally
-	-- This prevents timer from being stuck at 1 second after natural round end
+	print("[DBG-ROUND] Timer loop DONE | roundActive=", roundActive)
+
+	-- If round ended by timer (not by winners), wait a moment
 	if roundActive then
 		roundActive = false
-		Timer.Value = 0
-		print("⏰ Round timer completed naturally - timer set to 0")
 	end
 
-	ObjectSpawner.StopSpawning()
-	CoinSpawner.StopSpawning()
+	print("[DBG-ROUND] Stopping spawners...")
+	safeObjStop()
+	safeCoinStop()
 
 	if winConnection then
 		winConnection:Disconnect()
 		winConnection = nil
 	end
+	print("[DBG-ROUND] roundPhase END")
 end
 
 local function roundEndPhase()
 	print("?? ROUND END PHASE")
+	print("[DBG-ROUND] roundEndPhase START")
 	roundActive = false
-	ObjectSpawner.StopSpawning()
-	CoinSpawner.StopSpawning()
+	safeObjStop()
+	safeCoinStop()
 
 	-- Award coins based on placement for non-winners
 	local winnerSet = {}
@@ -568,6 +530,7 @@ local function roundEndPhase()
 
 	startTimer(CONFIG.RoundEndTime, "RoundEnd")
 	teleportPlayersToLobby()
+	print("[DBG-ROUND] roundEndPhase END")
 end
 
 -- ============================================
@@ -575,36 +538,48 @@ end
 -- ============================================
 
 local function gameLoop()
+	local loopCount = 0
 	while true do
+		loopCount = loopCount + 1
+		print("[DBG-ROUND] === GAME LOOP ITERATION", loopCount, "===")
+
 		repeat
-			print("⏳ Waiting for players... (" .. #Players:GetPlayers() .. "/" .. CONFIG.MinPlayers .. ")")
+			print("? Waiting for players... (" .. #Players:GetPlayers() .. "/" .. CONFIG.MinPlayers .. ")")
 			task.wait(2)
 		until enoughPlayers()
 
-		-- Recheck before starting intermission
-		if not enoughPlayers() then 
-			print("⚠️ Not enough players, restarting wait...")
-			continue 
+		print("[DBG-ROUND] Enough players! Starting round cycle...")
+		local phaseOk, phaseErr = pcall(function()
+			intermissionPhase()
+		end)
+		if not phaseOk then
+			warn("[DBG-ROUND] intermissionPhase CRASHED:", phaseErr)
 		end
-		
-		intermissionPhase()
-		
-		-- Recheck after intermission before voting
-		if not enoughPlayers() then 
-			print("⚠️ Not enough players after intermission, restarting...")
-			continue 
+
+		local mapName
+		phaseOk, phaseErr = pcall(function()
+			mapName = votingPhase()
+		end)
+		if not phaseOk then
+			warn("[DBG-ROUND] votingPhase CRASHED:", phaseErr)
+			mapName = "DefaultMap"
 		end
-		
-		local mapName = votingPhase()
-		
-		-- Recheck before round starts
-		if not enoughPlayers() then 
-			print("⚠️ Not enough players after voting, restarting...")
-			continue 
+
+		phaseOk, phaseErr = pcall(function()
+			roundPhase(mapName)
+		end)
+		if not phaseOk then
+			warn("[DBG-ROUND] roundPhase CRASHED:", phaseErr)
 		end
-		
-		roundPhase(mapName)
-		roundEndPhase()
+
+		phaseOk, phaseErr = pcall(function()
+			roundEndPhase()
+		end)
+		if not phaseOk then
+			warn("[DBG-ROUND] roundEndPhase CRASHED:", phaseErr)
+		end
+
+		print("[DBG-ROUND] === GAME LOOP ITERATION", loopCount, "COMPLETE ===")
 	end
 end
 
