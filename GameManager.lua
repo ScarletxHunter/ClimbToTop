@@ -96,6 +96,7 @@ _G.AdminEndRound = function()
 	print("⚙️ Admin: Ending round via hook (roundActive = false, will break timer loop)")
 end
 
+-- Admin skip jumps timer to 1 second, triggering rapid round end
 _G.AdminSkipRound = function()
 	_G.AdminSetTimer = 1
 	print("⚙️ Admin: Skipping round via hook (will jump timer to 1 second)")
