@@ -26,7 +26,7 @@ end
 -- Warn if products are not configured
 if not areProductIDsConfigured() then
 	warn("⚠️ SPECIAL ACTIONS: Product IDs not configured! Set KILL_ALL_PRODUCT_ID and SKIP_PRODUCT_ID in SpecialActionsHandler.lua")
-	warn("⚠️ Players will see 'Not Available' message when clicking special action buttons")
+	warn("   Players will see 'Not Available' message when clicking special action buttons")
 end
 
 -- Get or create RemoteEvents
