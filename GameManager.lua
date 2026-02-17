@@ -156,11 +156,9 @@ local function teleportPlayersToRoundStart()
 	end
 
 	for i, plr in ipairs(allPlayers) do
-		if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-			local startPart = startLocations[((i - 1) % #startLocations) + 1]
-			local offset = Vector3.new(math.random(-5, 5), 3, math.random(-5, 5))
-			plr.Character.HumanoidRootPart.CFrame = startPart.CFrame * CFrame.new(offset)
-		end
+		local startPart = startLocations[((i - 1) % #startLocations) + 1]
+		local offset = Vector3.new(math.random(-5, 5), 3, math.random(-5, 5))
+		plr.Character.HumanoidRootPart.CFrame = startPart.CFrame * CFrame.new(offset)
 	end
 	print("✅ Teleported", #allPlayers, "players across", #startLocations, "start location(s)")
 end
@@ -338,10 +336,6 @@ local function intermissionPhase()
 	SoundManager.PlayMusic("MenuMusic")
 
 	startTimer(CONFIG.IntermissionTime, "Intermission")
-	
-	-- Clear late joiners AFTER intermission ends (players are ready for new round)
-	lateJoiners = {}
-	print("✅ Late joiners cleared after intermission")
 end
 
 local function votingPhase()
@@ -360,7 +354,11 @@ local function votingPhase()
 end
 
 local function roundPhase(mapName)
-	print("?? ROUND PHASE - Loading map:", mapName)
+	print("🏁 ROUND PHASE - Loading map:", mapName)
+
+	-- Clear late joiners from previous round (players are ready for new round)
+	lateJoiners = {}
+	print("✅ Late joiners cleared before round starts")
 
 	-- Fade to black
 	SoundManager.PlaySFXForAll("Transition")
