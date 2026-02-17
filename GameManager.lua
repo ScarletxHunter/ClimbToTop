@@ -93,7 +93,7 @@ local winConnection = nil
 _G.AdminEndRound = function()
 	roundActive = false
 	_G.AdminForceEndRound = true
-	print("⚙️ Admin: Ending round via hook (roundActive=false, will break timer loop)")
+	print("⚙️ Admin: Ending round via hook (roundActive = false, will break timer loop)")
 end
 
 _G.AdminSkipRound = function()
@@ -426,6 +426,7 @@ local function roundPhase(mapName)
 
 	-- CRITICAL BUGFIX #1: Initialize timer IMMEDIATELY before countdown loop starts
 	-- This prevents timer GUI from showing stale value (2:00) during the ~11 seconds of setup above
+	-- (setup includes: fade transitions, map loading, player teleports, win detection setup, sound/music)
 	-- Setting Timer.Value = CONFIG.RoundTime here ensures the displayed timer matches the countdown
 	Timer.Value = CONFIG.RoundTime
 	
@@ -435,6 +436,7 @@ local function roundPhase(mapName)
 		-- This ensures proper handling when winners trigger early round end
 		if not roundActive then 
 			-- Timer was interrupted by winner or admin - ensure Timer.Value is synced to current value
+			-- Note: On first iteration (i=120), this assignment is redundant but kept for code clarity
 			Timer.Value = i
 			print("⏸️ Round ended early at " .. i .. " seconds remaining")
 			break 
