@@ -45,9 +45,9 @@ local function killAllPlayers(requestingPlayer)
 	
 	-- Kill all players except the one who activated it
 	local killedCount = 0
-	for _, player in ipairs(Players:GetPlayers()) do
-		if player ~= requestingPlayer and player.Character then
-			local humanoid = player.Character:FindFirstChild("Humanoid")
+	for _, eliminatedPlayer in ipairs(Players:GetPlayers()) do
+		if eliminatedPlayer ~= requestingPlayer and eliminatedPlayer.Character then
+			local humanoid = eliminatedPlayer.Character:FindFirstChild("Humanoid")
 			if humanoid and humanoid.Health > 0 then
 				humanoid.Health = 0
 				killedCount = killedCount + 1
@@ -56,7 +56,7 @@ local function killAllPlayers(requestingPlayer)
 				local notifyRemote = ReplicatedStorage:FindFirstChild("RemoteEvents") 
 					and ReplicatedStorage.RemoteEvents:FindFirstChild("NotifyClient")
 				if notifyRemote then
-					notifyRemote:FireClient(player, "💀 You were eliminated!", "Another player used Kill All", 3, "error")
+					notifyRemote:FireClient(eliminatedPlayer, "💀 You were eliminated!", "Another player used Kill All", 3, "error")
 				end
 			end
 		end

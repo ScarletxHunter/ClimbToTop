@@ -165,7 +165,7 @@ task.spawn(function()
 					end
 				end
 			end
-		elseif dist >= 10 or onPad or (gameState and gameState.Value == "Playing") then
+		elseif dist >= 10 or (gameState and gameState.Value == "Playing") then
 			onPad = false
 			panel.Visible = false
 			-- #region agent log
