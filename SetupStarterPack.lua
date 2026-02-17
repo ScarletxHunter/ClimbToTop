@@ -245,10 +245,11 @@ claimEvent.OnServerEvent:Connect(function(player)
 	markAsClaimed(player)
 	
 	-- Notify success
-	local rewardText = string.format("%d Coins, %s Trail, %d Win", 
+	local rewardText = string.format("%d Coins, %s Trail, %d Win%s", 
 		STARTER_PACK_REWARDS.Coins, 
 		STARTER_PACK_REWARDS.Trail, 
-		STARTER_PACK_REWARDS.Wins)
+		STARTER_PACK_REWARDS.Wins,
+		STARTER_PACK_REWARDS.Wins == 1 and "" or "s")
 	notifyPlayer(player, "🎁 Starter Pack Claimed!", rewardText, 4, "success")
 	
 	print("✅ Starter Pack claimed by:", player.Name)
