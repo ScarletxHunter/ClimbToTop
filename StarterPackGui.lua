@@ -134,9 +134,9 @@ itemsPadding.Parent = itemsFrame
 
 -- Items
 local items = {
-	{emoji = "💰", text = "500 Bonus Coins"},
-	{emoji = "⚡", text = "Speed Boost Trail"},
-	{emoji = "🎨", text = "Free Rainbow Trail"},
+	{emoji = "💰", text = "5,000 Bonus Coins"},
+	{emoji = "🌊", text = "Blue Trail"},
+	{emoji = "🏆", text = "1 Free Win"},
 }
 
 for i, item in ipairs(items) do
@@ -231,7 +231,6 @@ end)
 
 -- Claim button (connects to server-side rewards)
 claimBtn.MouseButton1Click:Connect(function()
-	-- TODO: Fire RemoteEvent to grant rewards on server
 	local claimEvent = RS:FindFirstChild("RemoteEvents") and RS.RemoteEvents:FindFirstChild("ClaimStarterPack")
 	
 	if claimEvent then
@@ -246,6 +245,36 @@ claimBtn.MouseButton1Click:Connect(function()
 	end
 	
 	toggleContainer(false)
+end)
+
+-- ============================================
+-- AUTO-PROMPT ON JOIN (NEW PLAYERS ONLY)
+-- ============================================
+task.spawn(function()
+	-- Wait for RemoteEvents to load
+	local remoteEvents = RS:WaitForChild("RemoteEvents", 10)
+	if not remoteEvents then return end
+	
+	local checkFunction = remoteEvents:FindFirstChild("CheckStarterPackClaim")
+	if not checkFunction then return end
+	
+	-- Wait 2.5 seconds after join before prompting
+	task.wait(2.5)
+	
+	-- Check if player has already claimed
+	local hasClaimed = false
+	local success, result = pcall(function()
+		return checkFunction:InvokeServer()
+	end)
+	
+	if success then
+		hasClaimed = result
+	end
+	
+	-- Auto-open if not claimed yet
+	if not hasClaimed then
+		toggleContainer(true)
+	end
 end)
 
 print("✅ StarterPack GUI loaded")
