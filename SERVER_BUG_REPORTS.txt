@@ -1,0 +1,228 @@
+  01:38:07.073  🪞 Mirror transparency → 0 (State: Intermission)  -  Server - MirrorHandler:40
+  01:38:07.073  ✅ Mirror Handler initialized  -  Server - MirrorHandler:48
+  01:38:07.073  ✅ Coin Remotes initialized (with purchase system)  -  Server - CoinRemotes:116
+  01:38:07.073  ? Gamepass Handler initialized  -  Server - GamepassHandler:322
+  01:38:07.074  Knockback tool gamepass active (ID: 1708531013)  -  Server - GamepassHandler:390
+  01:38:07.075  🔊 Sound Manager initialized  -  Server - SoundManager:83
+  01:38:07.075  ? CollisionHandler FRESH - snap recovery  -  Server - CollisionHandler:167
+  01:38:07.075     Ragdoll: 2s then SNAP to ground  -  Server - CollisionHandler:168
+  01:38:07.075     Cooldown: 3s  -  Server - CollisionHandler:169
+  01:38:07.075  ? Trail Shop Handler v7 loading...  -  Server - TrailShopHandler:14
+  01:38:07.075  Trail Shop Handler v7 loaded!  -  Server - TrailShopHandler:491
+  01:38:07.075    Total: 47 | Free: 4 | Coin: 32 | Premium: 11  -  Server - TrailShopHandler:494
+  01:38:07.075  ?? Daily Reward Handler loaded!  -  Server - DailyRewardHandler:193
+  01:38:07.075  🔧 Admin Handler loaded!  -  Server - AdminHandler:244
+  01:38:07.075     Admins: 658326075  -  Server - AdminHandler:245
+  01:38:07.075  ?? Skill Handler v2 loading...  -  Server - SkillHandler:6
+  01:38:07.075  ? Skill Handler v2 loaded!  -  Server - SkillHandler:921
+  01:38:07.076     Skills: FreezeTime, Dash, Phase, Shockwave, SpeedBurst, Teleport, TimeRewind, Bomber  -  Server - SkillHandler:922
+  01:38:07.076  🎮 GAME MANAGER STARTED  -  Server - GameManager:463
+  01:38:07.077  ⏳ Waiting for players... (0/1)  -  Server - GameManager:452
+  01:38:07.077  ✅ Marker system active  -  Server - Marker:33
+  01:38:07.179  🎫 GamePass Handler loading...  -  Server
+  01:38:07.179  ✅ GamePass Handler ready!  -  Server
+  01:38:07.179     Registered passes:  -  Server
+  01:38:07.179     - TrailMaster - ID: 1704388512  -  Server
+  01:38:07.179     - VIP - ID: 1704140664  -  Server
+  01:38:07.179     - Athlete - ID: 1703657605  -  Server
+  01:38:07.179     - HeadStart - ID: 1704300498  -  Server
+  01:38:07.179     - StarterPack - ID: 1704084817  -  Server
+  01:38:07.179     - KnockbackResist - ID: 1703795339  -  Server
+  01:38:09.084  ⏳ Waiting for players... (0/1)  -  Server - GameManager:452
+  01:38:09.175   ▶ Unable to load plugin icon: rbxassetid://204908652 (x2)  -  Studio
+  01:38:10.152  Requiring asset 6738245247.
+Callstack:
+cloud_2971874773.Atmos.PluginUpdates, line 36
+cloud_2971874773.Atmos.PluginUpdates, line 35 - getLatestVersion
+cloud_2971874773.Atmos.Script, line 322
+  -  Server
+  01:38:11.085   ▶ ⏳ Waiting for players... (0/1) (x2)  -  Server - GameManager:452
+  01:38:13.607  🔍 Checking GamePasses for Player1  -  Server
+  01:38:13.608  ✅ GamePass check complete for Player1  -  Server
+  01:38:13.609  ?? Gamepasses for Player1:  ▶ {...}  -  Server - GamepassHandler:78
+  01:38:13.818  ✅ Loaded data for: Player1  -  Server - PlayerDataManager:42
+  01:38:13.818  📊 Leaderstats created | Wins: 1 | Coins: 9585  -  Server - PlayerDataManager:59
+  01:38:15.102  ☕ INTERMISSION PHASE  -  Server - GameManager:269
+  01:38:15.102  🗑️ Unloading current map...  -  Server - MapLoader:13
+  01:38:15.102  ⏹️ Stopping spawner  -  Server - ObjectSpawner:186
+  01:38:15.102  Round purchases reset  -  Server - TrailShopHandler:434
+  01:38:15.103  🏠 Teleported all players to lobby  -  Server - GameManager:105
+  01:38:15.103  🎵 Playing: MenuMusic  -  Server - SoundManager:94
+  01:38:19.170  🔍 Checking GamePasses for Player2  -  Server
+  01:38:19.170  ✅ GamePass check complete for Player2  -  Server
+  01:38:19.170  ?? Gamepasses for Player2:  ▶ {...}  -  Server - GamepassHandler:78
+  01:38:19.301  ✅ Loaded data for: Player2  -  Server - PlayerDataManager:42
+  01:38:19.301  📊 Leaderstats created | Wins: 1 | Coins: 26860  -  Server - PlayerDataManager:59
+  01:38:31.268  🗳️ VOTING PHASE  -  Server - GameManager:286
+  01:38:31.268  🗳️ Starting world-based voting...  -  Server - VotingSystem:292
+  01:38:31.268  🖼️ Map preview: Planet V35 → VoteObject1  -  Server - VotingSystem:189
+  01:38:31.268  📋 VoteObject1 → Planet V35  -  Server - VotingSystem:375
+  01:38:31.784  ✅ World voting active with 1 map(s), 1 pedestal(s)  -  Server - VotingSystem:402
+  01:38:31.785  🪞 Mirror transparency → 0 (State: Voting)  -  Server - MirrorHandler:40
+  01:38:34.917  💾 Saved data for: Player1  -  Server - PlayerDataManager:83
+  01:38:43.317  💾 Saved data for: Player2  -  Server - PlayerDataManager:83
+  01:39:03.133  🎲 Random map selected: Planet V35  -  Server - VotingSystem:447
+  01:39:03.133  🗺️ Winning map: Planet V35  -  Server - GameManager:295
+  01:39:03.133  ⚔️ ROUND PHASE - Loading map: Planet V35  -  Server - GameManager:301
+  01:39:05.149  🗺️ Loading map: Planet V35  -  Server - MapLoader:33
+  01:39:05.149  🗑️ Unloading current map...  -  Server - MapLoader:13
+  01:39:05.149    📍 Spawners folder → Workspace root (5 spawners)  -  Server - MapLoader:62
+  01:39:05.159    📍 StartHere3 → Workspace root  -  Server - MapLoader:59
+  01:39:05.159    📍 StartHere2 → Workspace root  -  Server - MapLoader:59
+  01:39:05.161    📍 PropStop → Workspace root  -  Server - MapLoader:56
+  01:39:05.162    📍 StartHere1 → Workspace root  -  Server - MapLoader:59
+  01:39:05.163    📍 Start → Workspace root  -  Server - MapLoader:56
+  01:39:05.163    📍 StartHere3 → Workspace root  -  Server - MapLoader:59
+  01:39:05.163    📍 StartHere2 → Workspace root  -  Server - MapLoader:59
+  01:39:05.163    📍 StartHere4 → Workspace root  -  Server - MapLoader:59
+  01:39:05.164    📍 End → Workspace root  -  Server - MapLoader:56
+  01:39:05.164  ✅ Loaded props for Planet V35  -  Server - MapLoader:67
+  01:39:05.666  ✅ Teleported 2 players across 6 start location(s)  -  Server - GameManager:122
+  01:39:08.683  🪞 Mirror transparency → 0.5 (State: Playing)  -  Server - MirrorHandler:40
+  01:39:10.700  🎵 Playing: Map3Music  -  Server - SoundManager:94
+  01:39:10.700  🎯 Starting spawner for: Planet V35  -  Server - ObjectSpawner:158
+  01:39:10.700  ✅ Spawner: Spawner5 | Interval: 0.8 | Count: 5  -  Server - ObjectSpawner:68
+  01:39:10.700  ✅ Spawner: Spawner4 | Interval: 2.5 | Count: 2  -  Server - ObjectSpawner:68
+  01:39:10.700  ✅ Spawner: Spawner3 | Interval: 2.5 | Count: 2  -  Server - ObjectSpawner:68
+  01:39:10.700  ✅ Spawner: Spawner2 | Interval: 1.5 | Count: 3  -  Server - ObjectSpawner:68
+  01:39:10.700  ✅ Spawner: Spawner1 | Interval: 0.8 | Count: 5  -  Server - ObjectSpawner:68
+  01:39:10.700  📦 Spawn loops ready with 12 object types across 5 spawner(s)  -  Server - ObjectSpawner:175
+  01:40:19.179  ?? Player1 ragdolled  -  Server - CollisionHandler:92
+  01:40:19.863  ?? Player2 used FreezeTime  -  Server - SkillHandler:872
+  01:40:21.281  ? Player1 snapped back up  -  Server - CollisionHandler:130
+  01:41:06.545  ?? Player2 used FreezeTime  -  Server - SkillHandler:872
+  01:41:12.929  ⏹️ Stopping spawner  -  Server - ObjectSpawner:186
+  01:41:12.930  🏁 ROUND END PHASE  -  Server - GameManager:364
+  01:41:12.930  ⏹️ Stopping spawner  -  Server - ObjectSpawner:186
+  01:41:13.427  💾 Saved data for: Player1  -  Server - PlayerDataManager:83
+  01:41:13.661  💾 Saved data for: Player2  -  Server - PlayerDataManager:83
+  01:41:13.661  🪙 Player2 earned 5 coins! Total: 25865  -  Server - PlayerDataManager:133
+  01:41:13.661  🪙 Player2 earned 5 coins! (0%)  -  Server - GameManager:426
+  01:41:13.661  🪙 Player1 earned 5 coins! Total: 9290  -  Server - PlayerDataManager:133
+  01:41:13.661  🪙 Player1 earned 5 coins! (0%)  -  Server - GameManager:426
+  01:41:13.661  ⏰ Time's up! No winners.  -  Server - GameManager:437
+  01:41:13.661  Skills reset for all players (round ended)  -  Server - SkillHandler:939
+  01:41:13.661  🪞 Mirror transparency → 0 (State: RoundEnd)  -  Server - MirrorHandler:40
+  01:41:24.777  🏠 Teleported all players to lobby  -  Server - GameManager:105
+  01:41:24.777  ⏳ Waiting for players... (2/1)  -  Server - GameManager:452
+  01:41:26.794  ☕ INTERMISSION PHASE  -  Server - GameManager:269
+  01:41:26.794  🗑️ Unloading current map...  -  Server - MapLoader:13
+  01:41:26.800  ⏹️ Stopping spawner  -  Server - ObjectSpawner:186
+  01:41:26.801  Round purchases reset  -  Server - TrailShopHandler:434
+  01:41:26.801  🏠 Teleported all players to lobby  -  Server - GameManager:105
+  01:41:26.802  🎵 Playing: MenuMusic  -  Server - SoundManager:94
+  01:41:26.802  Skills reset for all players (round ended)  -  Server - SkillHandler:939
+  01:41:26.802  🪞 Mirror transparency → 0 (State: Intermission)  -  Server - MirrorHandler:40
+  01:41:40.992  💾 Saved data for: Player2  -  Server - PlayerDataManager:83
+  01:41:42.976  🗳️ VOTING PHASE  -  Server - GameManager:286
+  01:41:42.976  🗳️ Starting world-based voting...  -  Server - VotingSystem:292
+  01:41:42.976  🖼️ Map preview: Planet V35 → VoteObject1  -  Server - VotingSystem:189
+  01:41:42.976  📋 VoteObject1 → Planet V35  -  Server - VotingSystem:375
+  01:41:43.476  ✅ World voting active with 1 map(s), 1 pedestal(s)  -  Server - VotingSystem:402
+  01:41:43.477  🪞 Mirror transparency → 0 (State: Voting)  -  Server - MirrorHandler:40
+  01:41:43.543  💾 Saved data for: Player1  -  Server - PlayerDataManager:83
+  01:42:14.742  🎲 Random map selected: Planet V35  -  Server - VotingSystem:447
+  01:42:14.742  🗺️ Winning map: Planet V35  -  Server - GameManager:295
+  01:42:14.742  ⚔️ ROUND PHASE - Loading map: Planet V35  -  Server - GameManager:301
+  01:42:16.758  🗺️ Loading map: Planet V35  -  Server - MapLoader:33
+  01:42:16.758  🗑️ Unloading current map...  -  Server - MapLoader:13
+  01:42:16.759    📍 Spawners folder → Workspace root (5 spawners)  -  Server - MapLoader:62
+  01:42:16.766    📍 StartHere3 → Workspace root  -  Server - MapLoader:59
+  01:42:16.766    📍 StartHere2 → Workspace root  -  Server - MapLoader:59
+  01:42:16.768    📍 PropStop → Workspace root  -  Server - MapLoader:56
+  01:42:16.769    📍 StartHere1 → Workspace root  -  Server - MapLoader:59
+  01:42:16.769    📍 Start → Workspace root  -  Server - MapLoader:56
+  01:42:16.769    📍 StartHere3 → Workspace root  -  Server - MapLoader:59
+  01:42:16.769    📍 StartHere2 → Workspace root  -  Server - MapLoader:59
+  01:42:16.770    📍 StartHere4 → Workspace root  -  Server - MapLoader:59
+  01:42:16.770    📍 End → Workspace root  -  Server - MapLoader:56
+  01:42:16.770  ✅ Loaded props for Planet V35  -  Server - MapLoader:67
+  01:42:17.275  ✅ Teleported 2 players across 6 start location(s)  -  Server - GameManager:122
+  01:42:20.292  🪞 Mirror transparency → 0.5 (State: Playing)  -  Server - MirrorHandler:40
+  01:42:22.309  🎵 Playing: Map3Music  -  Server - SoundManager:94
+  01:42:22.309  🎯 Starting spawner for: Planet V35  -  Server - ObjectSpawner:158
+  01:42:22.310  ✅ Spawner: Spawner5 | Interval: 0.8 | Count: 5  -  Server - ObjectSpawner:68
+  01:42:22.310  ✅ Spawner: Spawner4 | Interval: 2.5 | Count: 2  -  Server - ObjectSpawner:68
+  01:42:22.310  ✅ Spawner: Spawner3 | Interval: 2.5 | Count: 2  -  Server - ObjectSpawner:68
+  01:42:22.310  ✅ Spawner: Spawner2 | Interval: 1.5 | Count: 3  -  Server - ObjectSpawner:68
+  01:42:22.310  ✅ Spawner: Spawner1 | Interval: 0.8 | Count: 5  -  Server - ObjectSpawner:68
+  01:42:22.310  📦 Spawn loops ready with 12 object types across 5 spawner(s)  -  Server - ObjectSpawner:175
+  01:42:37.257  ?? Player2 used SpeedBurst  -  Server - SkillHandler:872
+  01:42:50.343  🔄 Player2 reset → back to map start  -  Server - GameManager:167
+  01:42:57.490  ?? Player2 used SpeedBurst  -  Server - SkillHandler:872
+  01:43:07.423  💾 Saved data for: Player1  -  Server - PlayerDataManager:83
+  01:43:07.673  💾 Saved data for: Player2  -  Server - PlayerDataManager:83
+  01:43:07.673  💾 Auto-saved all player data  -  Server - PlayerDataManager:286
+  01:43:21.823  ?? Player2 ragdolled  -  Server - CollisionHandler:92
+  01:43:23.190  ?? Player1 used Momentum  -  Server - SkillHandler:872
+  01:43:23.955  ? Player2 snapped back up  -  Server - CollisionHandler:130
+  01:43:49.655  ?? Player2 used SpeedBurst  -  Server - SkillHandler:872
+  01:43:57.289  ?? Player2 ragdolled  -  Server - CollisionHandler:92
+  01:43:59.421  ? Player2 snapped back up  -  Server - CollisionHandler:130
+  01:44:09.937  ?? Player2 used SpeedBurst  -  Server - SkillHandler:872
+  01:44:24.570  ⏹️ Stopping spawner  -  Server - ObjectSpawner:186
+  01:44:24.572  🏁 ROUND END PHASE  -  Server - GameManager:364
+  01:44:24.572  ⏹️ Stopping spawner  -  Server - ObjectSpawner:186
+  01:44:24.971  💾 Saved data for: Player1  -  Server - PlayerDataManager:83
+  01:44:25.219  💾 Saved data for: Player2  -  Server - PlayerDataManager:83
+  01:44:25.219  🪙 Player2 earned 20 coins! Total: 22385  -  Server - PlayerDataManager:133
+  01:44:25.220  🪙 Player2 earned 20 coins! (55%)  -  Server - GameManager:426
+  01:44:25.220  🪙 Player1 earned 5 coins! Total: 7295  -  Server - PlayerDataManager:133
+  01:44:25.220  🪙 Player1 earned 5 coins! (0%)  -  Server - GameManager:426
+  01:44:25.220  ⏰ Time's up! No winners.  -  Server - GameManager:437
+  01:44:25.220  Skills reset for all players (round ended)  -  Server - SkillHandler:939
+  01:44:25.220  🪞 Mirror transparency → 0 (State: RoundEnd)  -  Server - MirrorHandler:40
+  01:44:36.320  🏠 Teleported all players to lobby  -  Server - GameManager:105
+  01:44:36.320  ⏳ Waiting for players... (2/1)  -  Server - GameManager:452
+  01:44:38.320  ☕ INTERMISSION PHASE  -  Server - GameManager:269
+  01:44:38.320  🗑️ Unloading current map...  -  Server - MapLoader:13
+  01:44:38.325  ⏹️ Stopping spawner  -  Server - ObjectSpawner:186
+  01:44:38.326  Round purchases reset  -  Server - TrailShopHandler:434
+  01:44:38.326  🏠 Teleported all players to lobby  -  Server - GameManager:105
+  01:44:38.326  🎵 Playing: MenuMusic  -  Server - SoundManager:94
+  01:44:38.326  Skills reset for all players (round ended)  -  Server - SkillHandler:939
+  01:44:38.326  🪞 Mirror transparency → 0 (State: Intermission)  -  Server - MirrorHandler:40
+  01:44:47.920  💾 Saved data for: Player2  -  Server - PlayerDataManager:83
+  01:44:54.485  🗳️ VOTING PHASE  -  Server - GameManager:286
+  01:44:54.485  🗳️ Starting world-based voting...  -  Server - VotingSystem:292
+  01:44:54.485  🖼️ Map preview: Planet V35 → VoteObject1  -  Server - VotingSystem:189
+  01:44:54.485  📋 VoteObject1 → Planet V35  -  Server - VotingSystem:375
+  01:44:54.986  ✅ World voting active with 1 map(s), 1 pedestal(s)  -  Server - VotingSystem:402
+  01:44:54.987  🪞 Mirror transparency → 0 (State: Voting)  -  Server - MirrorHandler:40
+  01:45:02.502  ?? Player1 claimed daily reward: Day 1: 500 Coins!  -  Server - DailyRewardHandler:175
+  01:45:24.350  💾 Saved data for: Player1  -  Server - PlayerDataManager:83
+  01:45:26.268  🎲 Random map selected: Planet V35  -  Server - VotingSystem:447
+  01:45:26.268  🗺️ Winning map: Planet V35  -  Server - GameManager:295
+  01:45:26.268  ⚔️ ROUND PHASE - Loading map: Planet V35  -  Server - GameManager:301
+  01:45:28.284  🗺️ Loading map: Planet V35  -  Server - MapLoader:33
+  01:45:28.284  🗑️ Unloading current map...  -  Server - MapLoader:13
+  01:45:28.285    📍 Spawners folder → Workspace root (5 spawners)  -  Server - MapLoader:62
+  01:45:28.291    📍 StartHere3 → Workspace root  -  Server - MapLoader:59
+  01:45:28.291    📍 StartHere2 → Workspace root  -  Server - MapLoader:59
+  01:45:28.293    📍 PropStop → Workspace root  -  Server - MapLoader:56
+  01:45:28.294    📍 StartHere1 → Workspace root  -  Server - MapLoader:59
+  01:45:28.294    📍 Start → Workspace root  -  Server - MapLoader:56
+  01:45:28.294    📍 StartHere3 → Workspace root  -  Server - MapLoader:59
+  01:45:28.294    📍 StartHere2 → Workspace root  -  Server - MapLoader:59
+  01:45:28.294    📍 StartHere4 → Workspace root  -  Server - MapLoader:59
+  01:45:28.295    📍 End → Workspace root  -  Server - MapLoader:56
+  01:45:28.295  ✅ Loaded props for Planet V35  -  Server - MapLoader:67
+  01:45:28.801  ✅ Teleported 2 players across 6 start location(s)  -  Server - GameManager:122
+  01:45:31.802  🪞 Mirror transparency → 0.5 (State: Playing)  -  Server - MirrorHandler:40
+  01:45:33.817  🎵 Playing: Map3Music  -  Server - SoundManager:94
+  01:45:33.817  🎯 Starting spawner for: Planet V35  -  Server - ObjectSpawner:158
+  01:45:33.817  ✅ Spawner: Spawner5 | Interval: 0.8 | Count: 5  -  Server - ObjectSpawner:68
+  01:45:33.817  ✅ Spawner: Spawner4 | Interval: 2.5 | Count: 2  -  Server - ObjectSpawner:68
+  01:45:33.817  ✅ Spawner: Spawner3 | Interval: 2.5 | Count: 2  -  Server - ObjectSpawner:68
+  01:45:33.817  ✅ Spawner: Spawner2 | Interval: 1.5 | Count: 3  -  Server - ObjectSpawner:68
+  01:45:33.817  ✅ Spawner: Spawner1 | Interval: 0.8 | Count: 5  -  Server - ObjectSpawner:68
+  01:45:33.817  📦 Spawn loops ready with 12 object types across 5 spawner(s)  -  Server - ObjectSpawner:175
+  01:45:47.217  ?? Player2 used Bomber  -  Server - SkillHandler:872
+  01:45:57.016  ?? Player1 used TimeRewind  -  Server - SkillHandler:872
+  01:46:02.116  ?? Player2 ragdolled  -  Server - CollisionHandler:92
+  01:46:04.234  ? Player2 snapped back up  -  Server - CollisionHandler:130
+  01:46:36.682  ?? Player1 ragdolled  -  Server - CollisionHandler:92
+  01:46:38.382  ?? Player1 used TimeRewind  -  Server - SkillHandler:872
+  01:46:38.798  ? Player1 snapped back up  -  Server - CollisionHandler:130
+  01:46:43.081  ?? Player1 ragdolled  -  Server - CollisionHandler:92
+  01:46:45.199  ? Player1 snapped back up  -  Server - CollisionHandler:130
